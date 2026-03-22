@@ -25,6 +25,12 @@ h1 .ue{color:#d946ef}
 .card-cyan{--accent:#38bdf8}.card-cyan .tag{color:#38bdf8}.card-cyan:hover{border-color:#38bdf8;background:rgba(56,189,248,0.04)}
 .card-orange{--accent:#f97316}.card-orange .tag{color:#f97316}.card-orange:hover{border-color:#f97316;background:rgba(249,115,22,0.04)}
 .card-emerald{--accent:#34d399}.card-emerald .tag{color:#34d399}.card-emerald:hover{border-color:#34d399;background:rgba(52,211,153,0.04)}
+.card-violet{--accent:#8b5cf6}.card-violet .tag{color:#8b5cf6}.card-violet:hover{border-color:#8b5cf6;background:rgba(139,92,246,0.04)}
+.card-amber{--accent:#f97316}.card-amber .tag{color:#f97316}.card-amber:hover{border-color:#f97316;background:rgba(249,115,22,0.04)}
+.card-pink{--accent:#ec4899}.card-pink .tag{color:#ec4899}.card-pink:hover{border-color:#ec4899;background:rgba(236,72,153,0.04)}
+.section-divider{max-width:1100px;width:100%;margin:40px 0 20px;position:relative;z-index:1;display:flex;align-items:center;gap:16px}
+.section-divider .line{flex:1;height:1px;background:var(--border)}
+.section-divider .label{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--dim)}
 footer{margin-top:50px;text-align:center;color:var(--dim);font-family:var(--mono);font-size:10px;letter-spacing:1px;position:relative;z-index:1}
 @media(max-width:600px){.grid{grid-template-columns:1fr}}
 </style>
@@ -58,6 +64,33 @@ footer{margin-top:50px;text-align:center;color:var(--dim);font-family:var(--mono
     <h2>Landscape Journey</h2>
     <p>Build outdoor environments &mdash; terrain sculpting, foliage painting, sky atmosphere, and volumetric clouds.</p>
     <div class="tag">Open Worlds &rarr;</div>
+  </a>
+</div>
+
+<div class="section-divider">
+  <div class="line"></div>
+  <div class="label">Extended Reality (XR)</div>
+  <div class="line"></div>
+</div>
+
+<div class="grid">
+  <a href="Unreal_Journey/unreal-vr-journey.html" class="card card-violet">
+    <div class="icon">&#129704;</div>
+    <h2>VR Journey</h2>
+    <p>Build virtual reality experiences &mdash; VR pawn, teleportation, hand interactions, 3D UI, and Quest deployment.</p>
+    <div class="tag">Virtual Reality &rarr;</div>
+  </a>
+  <a href="Unreal_Journey/unreal-ar-journey.html" class="card card-amber">
+    <div class="icon">&#128241;</div>
+    <h2>AR Journey</h2>
+    <p>Augmented reality with UE5 &mdash; surface detection, object placement, light estimation, and mobile deployment.</p>
+    <div class="tag">Augmented Reality &rarr;</div>
+  </a>
+  <a href="Unreal_Journey/unreal-mr-journey.html" class="card card-pink">
+    <div class="icon">&#127760;</div>
+    <h2>MR Journey</h2>
+    <p>Mixed reality on Quest 3 &mdash; passthrough, scene understanding, spatial anchors, and hand tracking in your real space.</p>
+    <div class="tag">Mixed Reality &rarr;</div>
   </a>
 </div>
 
