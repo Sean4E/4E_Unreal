@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unreal Landscape Journey - Outdoor Environment Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07080f;--surface:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.08);--accent:#34d399;--accent2:#38bdf8;--accent3:#f97316;--accent4:#d946ef;--text:#e8eaf0;--dim:#7a7f96;--code-bg:rgba(0,0,0,0.5);--mono:'Space Mono',monospace;--display:'Syne',sans-serif}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--display);line-height:1.7}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(52,211,153,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(52,211,153,0.02) 1px,transparent 1px);background-size:60px 60px}
+
+/* Hero */
+.hero{position:relative;padding:70px 40px 30px;text-align:center;z-index:1}
+.hero-badge{display:inline-block;background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.3);color:var(--accent);font-family:var(--mono);font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:6px 18px;border-radius:100px;margin-bottom:24px}
+.hero h1{font-size:clamp(34px,6vw,68px);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:16px}
+.hero h1 .ue{color:var(--accent)}
+.hero p{font-size:16px;color:var(--dim);max-width:640px;margin:0 auto 12px;line-height:1.8}
+.hero-sub{font-family:var(--mono);font-size:11px;color:#3f4460;letter-spacing:1px}
+
+/* Nav */
+.nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:0 40px 40px;z-index:1;position:relative}
+.nav a{background:var(--surface);border:1px solid var(--border);color:var(--dim);font-family:var(--mono);font-size:10px;padding:6px 14px;border-radius:100px;text-decoration:none;transition:all 0.2s;letter-spacing:0.5px}
+.nav a:hover{background:rgba(52,211,153,0.15);border-color:rgba(52,211,153,0.4);color:var(--accent)}
+.nav-div{width:100%;text-align:center;font-family:var(--mono);font-size:10px;color:#2a2d3a;letter-spacing:2px;padding:4px 0}
+
+/* Layout */
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.lesson{margin-bottom:50px}
+.lesson-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:20px}
+.lesson-num{font-family:var(--mono);font-size:12px;color:var(--accent);background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.25);padding:4px 10px;border-radius:6px;white-space:nowrap;margin-top:5px}
+.lesson-title{font-size:clamp(20px,3vw,30px);font-weight:800;letter-spacing:-1px;line-height:1.1}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 26px;margin-bottom:16px;backdrop-filter:blur(8px)}
+.card p{font-size:15px;color:#c5cad8;line-height:1.85}
+.card strong{color:var(--accent);font-weight:700}
+.card .blue{color:var(--accent2)}
+.card .orange{color:var(--accent3)}
+.card .purple{color:var(--accent4)}
+.card ul,.card ol{margin-left:1.5rem;color:#c5cad8;line-height:1.85;font-size:15px}
+.card li{margin-bottom:0.35rem}
+.analogy{background:rgba(56,189,248,0.06);border-left:3px solid var(--accent2);padding:12px 18px;border-radius:0 10px 10px 0;margin:12px 0;font-size:14px;color:#a5c8e8;font-style:italic}
+.ue-note{background:rgba(52,211,153,0.06);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 10px 10px 0;margin:12px 0 0;font-size:13px;color:#a5e8c8;font-style:italic}
+.warn-note{background:rgba(249,115,22,0.06);border-left:3px solid var(--accent3);padding:10px 16px;border-radius:0 10px 10px 0;margin:12px 0 0;font-size:13px;color:#e8c8a5;font-style:italic}
+.success-note{background:rgba(56,189,248,0.06);border-left:3px solid var(--accent2);padding:10px 16px;border-radius:0 10px 10px 0;margin:12px 0 0;font-size:13px;color:#a5c8e8}
+
+/* Code */
+pre{background:var(--code-bg);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.85;color:var(--text);margin-bottom:16px;white-space:pre}
+code{font-family:inherit}
+.kw{color:#c792ea}.st{color:#c3e88d}.nm{color:#f78c6c}.cm{color:#546e7a;font-style:italic}.ty{color:#82aaff}.fn{color:#82aaff}
+
+/* Grids */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.two>div,.three>div{min-width:0}
+
+/* Inspector / Details mock */
+.inspector{background:#2d2d2d;border:1px solid #555;border-radius:12px;padding:0;margin:12px 0;overflow:hidden;font-family:'Segoe UI',sans-serif;font-size:13px}
+.insp-header{background:#3d3d3d;padding:8px 14px;font-weight:600;display:flex;align-items:center;gap:8px;border-bottom:1px solid #555}
+.insp-header .cb{width:14px;height:14px;border:2px solid var(--accent);border-radius:3px;display:inline-block;background:var(--accent)}
+.insp-header .icon{font-size:16px}
+.insp-body{padding:10px 14px}
+.insp-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #3a3a3a}
+.insp-row:last-child{border-bottom:none}
+.insp-label{color:#bbb;font-size:12px}
+.insp-val{background:#1a1a1a;padding:3px 10px;border-radius:4px;color:#ddd;font-size:12px;min-width:100px;text-align:right}
+.insp-slot{background:#1a1a1a;padding:3px 10px;border-radius:4px;color:#888;font-size:12px;min-width:160px;text-align:center;border:1px dashed #555}
+.insp-slot.filled{color:var(--accent);border-style:solid;border-color:var(--accent)}
+.insp-section{font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;padding:8px 0 4px;border-bottom:1px solid #3a3a3a;font-weight:700;font-family:var(--mono)}
+
+/* Hierarchy / Outliner mock */
+.hierarchy{background:#2d2d2d;border:1px solid #555;border-radius:12px;padding:12px 14px;margin:12px 0;font-family:var(--mono);font-size:12px}
+.hierarchy-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:8px;font-weight:700}
+.h-item{padding:3px 0;color:#ccc;display:flex;align-items:center;gap:6px}
+.h-item .icon{font-size:14px}
+.h-child{margin-left:20px}
+.h-child2{margin-left:40px}
+.h-item.selected{color:var(--accent);background:rgba(52,211,153,0.1);margin:0 -14px;padding:3px 14px;border-radius:4px}
+
+/* Keyboard shortcut cards */
+.shortcut-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:12px 0}
+.shortcut{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.15);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.shortcut kbd{background:#1a1a1a;border:1px solid #444;border-radius:5px;padding:3px 8px;font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap;box-shadow:0 2px 0 #333}
+.shortcut span{color:#bbb;font-size:12px}
+
+/* Sections */
+.part-div{max-width:1100px;margin:30px auto 20px;padding:0 24px}
+.part-inner{border:1px solid var(--border);border-radius:12px;padding:20px 24px;text-align:center;background:linear-gradient(135deg,rgba(52,211,153,0.06),transparent)}
+.part-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:3px;color:var(--accent);margin-bottom:4px}
+.part-title{font-size:22px;font-weight:800;margin-bottom:4px}
+.part-desc{color:var(--dim);font-size:14px}
+
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:40px 0}
+
+/* Steps list */
+.steps{counter-reset:step;list-style:none;margin:0}
+.steps li{counter-increment:step;position:relative;padding-left:36px;margin-bottom:12px;color:#c5cad8;font-size:15px}
+.steps li::before{content:counter(step);position:absolute;left:0;top:2px;width:24px;height:24px;line-height:24px;text-align:center;background:var(--accent);color:#000;border-radius:50%;font-size:12px;font-weight:700;font-family:var(--mono)}
+
+/* Checklist */
+.checklist{list-style:none;margin:0}
+.checklist li{padding:8px 0;border-bottom:1px solid var(--border);color:#c5cad8;font-size:15px;padding-left:28px;position:relative}
+.checklist li:last-child{border-bottom:none}
+.checklist li::before{content:'\2610';position:absolute;left:0;font-size:18px;color:var(--accent)}
+
+/* Comparison table */
+.compare{width:100%;border-collapse:collapse;margin:12px 0}
+.compare th{text-align:left;padding:8px 12px;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid var(--border);font-family:var(--mono)}
+.compare td{padding:8px 12px;border-bottom:1px solid var(--border);color:#c5cad8;font-size:14px}
+.compare td code{background:var(--code-bg);padding:2px 6px;border-radius:4px;font-size:12px}
+
+footer{text-align:center;padding:36px 24px;color:var(--dim);font-family:var(--mono);font-size:11px;border-top:1px solid var(--border);margin-top:50px;position:relative;z-index:1}
+
+@media(max-width:850px){.two,.three{grid-template-columns:1fr}.hero{padding:50px 20px 20px}.nav{padding:0 16px 24px}.wrap{padding:0 14px}pre{font-size:11px;padding:14px}.shortcut-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.shortcut-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Build-Along Guide</div>
+  <h1>Unreal <span class="ue">Landscape</span> Journey</h1>
+  <p>Eight steps to build a natural outdoor environment in Unreal Engine 5. From a flat terrain to a living landscape with sculpted hills, painted materials, foliage, water, and atmosphere.</p>
+  <div class="hero-sub">Week 10 &middot; Landscape Environments &middot; Unreal Engine 5</div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <a href="#s0">00 Outdoor Environments</a>
+  <a href="#s1">01 Create Landscape</a>
+  <a href="#s2">02 Sculpt Terrain</a>
+  <a href="#s3">03 Paint Landscape</a>
+  <a href="#s4">04 Sky &amp; Atmosphere</a>
+  <a href="#s5">05 Foliage &amp; Trees</a>
+  <a href="#s6">06 Water</a>
+  <a href="#s7">07 Props &amp; Polish</a>
+  <div class="nav-div">--</div>
+  <a href="#checklist">Checklist</a>
+  <a href="#shortcuts">Shortcuts</a>
+</div>
+
+<!-- PART: FOUNDATION -->
+<div class="part-div"><div class="part-inner">
+  <div class="part-label">Foundation</div>
+  <div class="part-title">Outdoor Environments in UE5</div>
+  <p class="part-desc">Understand the landscape system, what it does, and what you will build across these eight steps.</p>
+</div></div>
+
+<div class="wrap">
+
+<!-- ══════════════════════════════════════════ -->
+<!-- STEP 0: OUTDOOR ENVIRONMENTS              -->
+<!-- ══════════════════════════════════════════ -->
+<div class="lesson" id="s0">
+  <div class="lesson-head">
+    <span class="lesson-num">00</span>
+    <h2 class="lesson-title">Outdoor Environments in UE5</h2>
+  </div>
+
+  <div class="card">
+    <p><strong>What is the Landscape system?</strong> UE5 provides a dedicated system for creating large-scale outdoor terrain. Unlike placing individual static meshes to form ground geometry, the Landscape system uses a <span class="blue">heightmap-based approach</span> &mdash; a grid of vertices that you push up or pull down to shape hills, valleys, and mountains. It is purpose-built for natural environments.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Landscapes vs Static Meshes</h3>
+    <table class="compare">
+      <tr><th>Approach</th><th>Best For</th><th>How It Works</th></tr>
+      <tr><td><strong>Landscape</strong></td><td>Large outdoor terrain (hills, fields, mountains)</td><td>Heightmap grid &mdash; sculpt and paint directly in the editor</td></tr>
+      <tr><td><strong>Static Meshes</strong></td><td>Individual objects (rocks, buildings, props)</td><td>Pre-made 3D models placed into the scene</td></tr>
+    </table>
+    <div class="analogy">Think of a Landscape as a sheet of clay you can push and pull with your fingers. Static Meshes are pre-made objects you place on top of that clay &mdash; a rock, a tree, a building. You use both together to build a complete outdoor environment.</div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Key Landscape Features</h3>
+    <ul>
+      <li><strong>Sculpting</strong> &mdash; raise, lower, smooth, flatten, and erode terrain directly in the viewport</li>
+      <li><strong>Painting</strong> &mdash; apply multiple material layers (grass, dirt, rock) by painting onto the surface</li>
+      <li><strong>Foliage</strong> &mdash; scatter trees, grass, and plants across the landscape with a brush</li>
+      <li><strong>Atmosphere</strong> &mdash; sky, clouds, fog, and lighting systems designed for outdoor scenes</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">What We Will Build</h3>
+    <p>Over these eight steps, you will create a complete natural outdoor environment:</p>
+    <ul>
+      <li>A sculpted terrain with hills, valleys, and a flat area</li>
+      <li>A multi-layer painted landscape material (grass, dirt, rock)</li>
+      <li>A realistic sky with volumetric clouds and atmospheric fog</li>
+      <li>Foliage scattered across the landscape (trees, grass, bushes)</li>
+      <li>A water body (lake or river)</li>
+      <li>Props, sound, and final atmospheric polish</li>
+    </ul>
+  </div>
+
+  <div class="success-note"><strong>Milestone:</strong> You understand the difference between Landscapes and Static Meshes, and you know what features the Landscape system provides.</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- STEP 1: CREATE A LANDSCAPE                -->
+<!-- ══════════════════════════════════════════ -->
+<div class="lesson" id="s1">
+  <div class="lesson-head">
+    <span class="lesson-num">01</span>
+    <h2 class="lesson-title">Create a Landscape</h2>
+  </div>
+
+  <div class="card">
+    <p>The first step is to create the terrain itself. UE5 has a dedicated <strong>Landscape Mode</strong> that lets you configure and generate a heightmap-based terrain with a single click.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Enter Landscape Mode</h3>
+    <ol class="steps">
+      <li>Open your UE5 project (or create a new one with the <strong>Blank</strong> template)</li>
+      <li>Press <strong>Shift+3</strong> to enter <strong>Landscape Mode</strong> (or use the Modes dropdown in the toolbar)</li>
+      <li>You will see the Landscape panel appear on the left with <strong>Manage</strong>, <strong>Sculpt</strong>, and <strong>Paint</strong> tabs</li>
+      <li>Make sure <strong>Manage &rarr; New Landscape</strong> is selected</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Configure Landscape Settings</h3>
+    <p>These three settings control the resolution and size of your terrain grid:</p>
+    <table class="compare">
+      <tr><th>Setting</th><th>What It Controls</th><th>Beginner Value</th></tr>
+      <tr><td><strong>Section Size</strong></td><td>Quads per landscape section</td><td><code>63 x 63</code></td></tr>
+      <tr><td><strong>Sections Per Component</strong></td><td>How many sections make up one component</td><td><code>1 x 1</code></td></tr>
+      <tr><td><strong>Number of Components</strong></td><td>Total components across the landscape</td><td><code>8 x 8</code></td></tr>
+    </table>
+    <div class="ue-note"><strong>Beginner recommendation:</strong> Use 63x63, 1x1, 8x8. This creates a manageable terrain that is large enough to build an interesting environment but small enough to work with comfortably. You can always create a larger landscape later.</div>
+  </div>
+
+  <!-- Details Panel mock: Landscape Settings -->
+  <div class="inspector">
+    <div class="insp-header"><span class="icon">&#9965;</span> Landscape Settings &mdash; New Landscape</div>
+    <div class="insp-body">
+      <div class="insp-section">Section</div>
+      <div class="insp-row"><span class="insp-label">Section Size</span><span class="insp-val">63 x 63 Quads</span></div>
+      <div class="insp-row"><span class="insp-label">Sections Per Component</span><span class="insp-val">1 x 1</span></div>
+      <div class="insp-row"><span class="insp-label">Number of Components</span><span class="insp-val">8 x 8</span></div>
+      <div class="insp-section">Scale</div>
+      <div class="insp-row"><span class="insp-label">Scale X</span><span class="insp-val">100.0</span></div>
+      <div class="insp-row"><span class="insp-label">Scale Y</span><span class="insp-val">100.0</span></div>
+      <div class="insp-row"><span class="insp-label">Scale Z</span><span class="insp-val">100.0</span></div>
+      <div class="insp-section">Material</div>
+      <div class="insp-row"><span class="insp-label">Material</span><span class="insp-slot">None (assign later)</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Create the Terrain</h3>
+    <ol class="steps">
+      <li>Leave the Scale at <code>100, 100, 100</code> (default)</li>
+      <li>Click the <strong>Create</strong> button at the bottom of the Landscape panel</li>
+      <li>A flat green terrain will appear in the Viewport</li>
+      <li>Navigate around it: hold <strong>Right-click + WASD</strong> to fly, scroll to adjust speed</li>
+      <li>Press <strong>F</strong> with the landscape selected to focus on it and get a sense of scale</li>
+    </ol>
+  </div>
+
+  <div class="warn-note"><strong>Note:</strong> Once created, you cannot change the component count. If you need a bigger landscape later, you will need to delete and re-create it. Plan your size before clicking Create.</div>
+
+  <div class="success-note"><strong>Milestone:</strong> You have a flat landscape in your Viewport. You can fly around it and see the green default material covering the surface.</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- STEP 2: SCULPT THE TERRAIN                -->
+<!-- ══════════════════════════════════════════ -->
+<div class="lesson" id="s2">
+  <div class="lesson-head">
+    <span class="lesson-num">02</span>
+    <h2 class="lesson-title">Sculpt the Terrain</h2>
+  </div>
+
+  <div class="card">
+    <p>Now you will shape the flat terrain into something natural. The <strong>Sculpt</strong> tab in Landscape Mode provides several tools for pushing, pulling, smoothing, and eroding the heightmap.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Sculpt Tools Overview</h3>
+    <table class="compare">
+      <tr><th>Tool</th><th>What It Does</th><th>When to Use</th></tr>
+      <tr><td><strong>Sculpt</strong></td><td>Raises terrain where you paint</td><td>Creating hills and elevated areas</td></tr>
+      <tr><td><strong>Smooth</strong></td><td>Averages the height of nearby vertices</td><td>Removing jagged edges and harsh transitions</td></tr>
+      <tr><td><strong>Flatten</strong></td><td>Sets all vertices to the same height</td><td>Creating flat plateaus or building sites</td></tr>
+      <tr><td><strong>Erosion</strong></td><td>Simulates natural weathering</td><td>Adding realistic erosion to cliff faces</td></tr>
+      <tr><td><strong>Noise</strong></td><td>Adds random variation to the height</td><td>Breaking up uniform areas with natural roughness</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Brush Settings</h3>
+    <p>Every sculpt tool uses a circular brush. You control three properties:</p>
+    <ul>
+      <li><strong>Brush Size</strong> &mdash; radius of the brush. Use <strong>[</strong> and <strong>]</strong> keys to resize quickly</li>
+      <li><strong>Brush Falloff</strong> &mdash; how soft the edge of the brush is (0.0 = hard edge, 1.0 = feathered)</li>
+      <li><strong>Tool Strength</strong> &mdash; how much effect each stroke has (keep this low, around 0.1 to 0.3)</li>
+    </ul>
+    <div class="ue-note"><strong>Key tip:</strong> Hold <strong>Shift</strong> while sculpting to <strong>lower</strong> the terrain instead of raising it. This works with the Sculpt tool and is essential for creating valleys and river beds.</div>
+  </div>
+
+  <!-- Details Panel mock: Brush Settings -->
+  <div class="inspector">
+    <div class="insp-header"><span class="cb"></span> Sculpt Tool &mdash; Brush Settings</div>
+    <div class="insp-body">
+      <div class="insp-section">Brush</div>
+      <div class="insp-row"><span class="insp-label">Brush Size</span><span class="insp-val">2048.0</span></div>
+      <div class="insp-row"><span class="insp-label">Brush Falloff</span><span class="insp-val">0.5</span></div>
+      <div class="insp-row"><span class="insp-label">Tool Strength</span><span class="insp-val">0.2</span></div>
+      <div class="insp-section">Tool</div>
+      <div class="insp-row"><span class="insp-label">Active Tool</span><span class="insp-val">Sculpt</span></div>
+      <div class="insp-row"><span class="insp-label">Shift Mode</span><span class="insp-val">Lower</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Sculpting Techniques</h3>
+    <ol class="steps">
+      <li>Start with a <strong>large brush</strong> and <strong>low strength</strong> (0.1&ndash;0.2) &mdash; this creates gentle, natural shapes</li>
+      <li>Create some <strong>rolling hills</strong>: paint broad strokes across the terrain with the Sculpt tool</li>
+      <li>Hold <strong>Shift</strong> and sculpt to carve a <strong>valley</strong> between two hills</li>
+      <li>Use the <strong>Smooth</strong> tool to soften any harsh edges or unnatural peaks</li>
+      <li>Leave a <strong>flat area</strong> for placing a lake or building later</li>
+      <li>Switch to a <strong>smaller brush</strong> and add detail: subtle ridges, dips, cliff edges</li>
+      <li>Use <strong>Erosion</strong> on steep slopes to add realistic weathering</li>
+      <li>Use <strong>Noise</strong> sparingly on flat areas to break up uniformity</li>
+    </ol>
+    <div class="analogy">Think of sculpting in two passes: the first pass is broad strokes with a large, soft brush to establish the overall landforms. The second pass is detail work with a smaller brush &mdash; adding character, roughness, and interest to specific areas.</div>
+  </div>
+
+  <div class="warn-note"><strong>Common mistake:</strong> Using too much strength creates spiky, unnatural terrain. Keep strength low and build up gradually. You can always add more, but flattening and smoothing takes time.</div>
+
+  <div class="success-note"><strong>Milestone:</strong> Your terrain has varied elevation &mdash; rolling hills, at least one valley, and a flat area. It looks like natural land, not a flat plane.</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- PART: SURFACING                           -->
+<!-- ══════════════════════════════════════════ -->
+</div><!-- /wrap temporarily -->
+
+<div class="part-div"><div class="part-inner">
+  <div class="part-label">Surfacing</div>
+  <div class="part-title">Materials, Sky &amp; Atmosphere</div>
+  <p class="part-desc">Give your terrain colour and texture, then build the sky above it.</p>
+</div></div>
+
+<div class="wrap">
+
+<!-- ══════════════════════════════════════════ -->
+<!-- STEP 3: PAINT THE LANDSCAPE               -->
+<!-- ══════════════════════════════════════════ -->
+<div class="lesson" id="s3">
+  <div class="lesson-head">
+    <span class="lesson-num">03</span>
+    <h2 class="lesson-title">Paint the Landscape</h2>
+  </div>
+
+  <div class="card">
+    <p>A sculpted landscape still looks flat and featureless without materials. UE5 lets you paint <strong>multiple material layers</strong> directly onto the terrain &mdash; grass on flat areas, dirt on paths, rock on steep slopes. This is done through a special <strong>Landscape Material</strong> with blendable layers.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Create a Landscape Material</h3>
+    <ol class="steps">
+      <li>In the <strong>Content Browser</strong>, right-click &rarr; <strong>Material</strong> &rarr; name it <code>M_Landscape</code></li>
+      <li>Double-click to open the <strong>Material Editor</strong> (a node-based graph)</li>
+      <li>Right-click in the graph &rarr; search for <strong>Landscape Layer Blend</strong> &rarr; add it</li>
+      <li>In the Details Panel of the Landscape Layer Blend node, click <strong>+</strong> to add layers</li>
+      <li>Add three layers: <code>Grass</code>, <code>Dirt</code>, <code>Rock</code></li>
+      <li>Set each layer&rsquo;s <strong>Blend Type</strong> to <strong>LB Weight Blend</strong></li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Connect Textures to Each Layer</h3>
+    <p>For each layer, you need a <strong>colour texture</strong> and a <strong>normal map</strong>:</p>
+    <ol class="steps">
+      <li>Right-click in the graph &rarr; <strong>Texture Sample</strong> &rarr; assign a grass texture to the Texture property</li>
+      <li>Create another <strong>Texture Sample</strong> for the grass normal map</li>
+      <li>Repeat for dirt and rock (6 Texture Sample nodes total: 3 colour + 3 normal)</li>
+      <li>Connect the colour outputs to the <strong>Landscape Layer Blend</strong> inputs</li>
+      <li>Create a second <strong>Landscape Layer Blend</strong> for normals and connect the normal maps</li>
+      <li>Wire the first Blend output to <strong>Base Color</strong> and the second to <strong>Normal</strong></li>
+      <li>Click <strong>Apply</strong> and <strong>Save</strong></li>
+    </ol>
+    <div class="ue-note"><strong>Where to get textures:</strong> Open <strong>Fab</strong> (formerly Quixel Bridge) from Window &rarr; Fab. Search for grass, soil, and rock surface textures. Download and they appear in your Content Browser.</div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Assign and Paint</h3>
+    <ol class="steps">
+      <li>Select the Landscape in the Viewport</li>
+      <li>In the Details Panel, find the <strong>Landscape Material</strong> slot and assign <code>M_Landscape</code></li>
+      <li>Switch to the <strong>Paint</strong> tab in Landscape Mode</li>
+      <li>You will see your layers listed: <strong>Grass</strong>, <strong>Dirt</strong>, <strong>Rock</strong></li>
+      <li>Select a layer and paint directly onto the terrain with the brush</li>
+      <li>Paint <strong>Grass</strong> on flat open areas</li>
+      <li>Paint <strong>Dirt</strong> along paths, valleys, and transition areas</li>
+      <li>Paint <strong>Rock</strong> on steep cliff faces and exposed surfaces</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Auto-Paint by Slope (Advanced)</h3>
+    <p>You can set the material to <strong>automatically</strong> apply rock on steep slopes and grass on flat areas:</p>
+    <ul>
+      <li>In the Material Editor, add a <strong>Landscape Layer Sample</strong> node</li>
+      <li>Use a <strong>World Aligned Blend</strong> or slope-based logic to blend layers</li>
+      <li>Steep angles (above ~45 degrees) receive the Rock layer, flat areas receive Grass</li>
+      <li>This gives you a natural base that you can then refine by hand-painting</li>
+    </ul>
+    <div class="analogy">Think of auto-painting like a smart fill: the engine looks at the slope of each point on the terrain and applies the appropriate texture. You then paint over specific areas to add paths, clearings, or detail.</div>
+  </div>
+
+  <div class="success-note"><strong>Milestone:</strong> Your terrain has a multi-layer material applied. Grass covers flat areas, rock appears on slopes, and dirt marks transitions. The landscape looks like real ground.</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- STEP 4: SKY & ATMOSPHERE                  -->
+<!-- ══════════════════════════════════════════ -->
+<div class="lesson" id="s4">
+  <div class="lesson-head">
+    <span class="lesson-num">04</span>
+    <h2 class="lesson-title">Sky &amp; Atmosphere</h2>
+  </div>
+
+  <div class="card">
+    <p>An outdoor landscape needs a sky. UE5 provides a full atmospheric rendering system that simulates realistic sky colour, sun position, clouds, and distance haze &mdash; all without any external tools or skybox textures.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Add Atmosphere Actors</h3>
+    <p>Place these actors into your level from the <strong>Place Actors</strong> panel (or type their names into the search):</p>
+    <ol class="steps">
+      <li><strong>Sky Atmosphere</strong> &mdash; generates the realistic sky dome with Rayleigh scattering</li>
+      <li><strong>Directional Light</strong> &mdash; acts as the sun. Rotate it to change time of day</li>
+      <li><strong>Sky Light</strong> &mdash; captures ambient light from the sky and applies it as fill lighting</li>
+      <li><strong>Exponential Height Fog</strong> &mdash; adds distance haze and atmospheric depth</li>
+      <li><strong>Volumetric Clouds</strong> &mdash; renders a full 3D cloud layer in the sky</li>
+      <li><strong>Post Process Volume</strong> &mdash; controls colour grading, exposure, bloom, and other visual effects</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Configure Each Actor</h3>
+    <div class="two">
+      <div class="card" style="margin-bottom:0">
+        <p><strong>Directional Light (Sun)</strong></p>
+        <ul>
+          <li>Check <strong>Atmosphere Sun Light</strong> in the Details Panel</li>
+          <li>Rotate on the <strong>Y axis</strong> to change the sun&rsquo;s elevation</li>
+          <li>Low angles = sunrise/sunset (warm golden light)</li>
+          <li>High angles = midday (bright, harsh)</li>
+          <li>Below horizon = nighttime</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <p><strong>Sky Light</strong></p>
+        <ul>
+          <li>Set <strong>Real Time Capture</strong> to <strong>enabled</strong></li>
+          <li>This makes the Sky Light update dynamically as you move the sun</li>
+          <li>The ambient light colour will match the sky automatically</li>
+          <li>Adjust <strong>Intensity</strong> to control fill light brightness</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Details Panel mock: Sky Atmosphere -->
+  <div class="inspector">
+    <div class="insp-header"><span class="icon">&#9788;</span> Sky Atmosphere &mdash; Properties</div>
+    <div class="insp-body">
+      <div class="insp-section">Atmosphere</div>
+      <div class="insp-row"><span class="insp-label">Rayleigh Scattering</span><span class="insp-val">0.175, 0.409, 1.0</span></div>
+      <div class="insp-row"><span class="insp-label">Rayleigh Exp. Distribution</span><span class="insp-val">8.0</span></div>
+      <div class="insp-row"><span class="insp-label">Mie Scattering</span><span class="insp-val">0.004</span></div>
+      <div class="insp-section">Art Direction</div>
+      <div class="insp-row"><span class="insp-label">Multi Scattering</span><span class="insp-val">1.0</span></div>
+      <div class="insp-row"><span class="insp-label">Height Fog Contribution</span><span class="insp-val">1.0</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Exponential Height Fog</h3>
+    <ul>
+      <li>Adds atmospheric depth &mdash; distant objects fade into haze</li>
+      <li>Increase <strong>Fog Density</strong> for thick mist, decrease for a clear day</li>
+      <li>Enable <strong>Volumetric Fog</strong> for light shafts (god rays) through trees and clouds</li>
+      <li>Adjust <strong>Fog Inscattering Color</strong> to match your sky&rsquo;s colour mood</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Post Process Volume</h3>
+    <ul>
+      <li>Place a Post Process Volume and set <strong>Infinite Extent (Unbound)</strong> to <strong>true</strong> in the Details Panel</li>
+      <li><strong>Exposure:</strong> set Min/Max Brightness to control how bright or dark the scene adapts</li>
+      <li><strong>Bloom:</strong> adds a soft glow around bright areas (keep subtle, around 0.5)</li>
+      <li><strong>Color Grading:</strong> use Saturation, Contrast, and White Balance to set your mood</li>
+      <li><strong>Vignette:</strong> darkens edges for a cinematic feel (0.2&ndash;0.4 is usually enough)</li>
+    </ul>
+  </div>
+
+  <div class="hierarchy">
+    <div class="hierarchy-title">Outliner &mdash; Atmosphere Setup</div>
+    <div class="h-item"><span class="icon">&#9660;</span> Lighting</div>
+    <div class="h-item h-child">&#9788; DirectionalLight (Sun)</div>
+    <div class="h-item h-child">&#9788; SkyLight</div>
+    <div class="h-item h-child selected">&#9729; SkyAtmosphere</div>
+    <div class="h-item h-child">&#9729; VolumetricCloud</div>
+    <div class="h-item h-child">&#9729; ExponentialHeightFog</div>
+    <div class="h-item h-child">&#9632; PostProcessVolume</div>
+  </div>
+
+  <div class="success-note"><strong>Milestone:</strong> Your level has a realistic sky with clouds, a sun that sets the time of day, atmospheric fog for depth, and post-process effects for visual polish.</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- PART: ENVIRONMENT DETAIL                  -->
+<!-- ══════════════════════════════════════════ -->
+</div><!-- /wrap temporarily -->
+
+<div class="part-div"><div class="part-inner">
+  <div class="part-label">Environment Detail</div>
+  <div class="part-title">Foliage, Water &amp; Props</div>
+  <p class="part-desc">Bring the landscape to life with vegetation, water, and environmental details.</p>
+</div></div>
+
+<div class="wrap">
+
+<!-- ══════════════════════════════════════════ -->
+<!-- STEP 5: FOLIAGE & TREES                   -->
+<!-- ══════════════════════════════════════════ -->
+<div class="lesson" id="s5">
+  <div class="lesson-head">
+    <span class="lesson-num">05</span>
+    <h2 class="lesson-title">Foliage &amp; Trees</h2>
+  </div>
+
+  <div class="card">
+    <p>An empty terrain feels lifeless. The <strong>Foliage Mode</strong> lets you scatter thousands of meshes (trees, grass, bushes, flowers) across the landscape with a paint brush. UE5 handles instancing automatically, so you can place dense vegetation while keeping performance reasonable.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Enter Foliage Mode</h3>
+    <ol class="steps">
+      <li>Press <strong>Shift+4</strong> to enter <strong>Foliage Mode</strong> (or use the Modes dropdown)</li>
+      <li>The Foliage panel appears with a list of foliage types and brush settings</li>
+      <li>Click <strong>+ Add Foliage Type</strong> (the + button) to add meshes</li>
+      <li>Drag a <strong>Static Mesh</strong> from the Content Browser into the foliage list (e.g. a tree mesh from Fab)</li>
+      <li>Repeat for different vegetation types: grass clumps, bushes, flowers</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Paint Foliage</h3>
+    <ol class="steps">
+      <li>Select one or more foliage types in the list (checkmark them)</li>
+      <li>Adjust the <strong>Brush Size</strong> &mdash; large for broad coverage, small for detail</li>
+      <li>Click and drag on the landscape to paint foliage instances</li>
+      <li>Hold <strong>Shift</strong> while painting to <strong>erase</strong> foliage</li>
+      <li>Add trees on hilltops and along ridges</li>
+      <li>Add grass and ground cover in open areas</li>
+      <li>Add bushes along the edges of paths and near water</li>
+    </ol>
+  </div>
+
+  <!-- Details Panel mock: Foliage Brush Settings -->
+  <div class="inspector">
+    <div class="insp-header"><span class="cb"></span> Foliage Brush &mdash; Settings</div>
+    <div class="insp-body">
+      <div class="insp-section">Brush</div>
+      <div class="insp-row"><span class="insp-label">Brush Size</span><span class="insp-val">512.0</span></div>
+      <div class="insp-row"><span class="insp-label">Paint Density</span><span class="insp-val">0.5</span></div>
+      <div class="insp-row"><span class="insp-label">Erase Density</span><span class="insp-val">0.5</span></div>
+      <div class="insp-section">Instance Settings</div>
+      <div class="insp-row"><span class="insp-label">Align to Surface</span><span class="insp-val">true</span></div>
+      <div class="insp-row"><span class="insp-label">Random Yaw</span><span class="insp-val">true</span></div>
+      <div class="insp-row"><span class="insp-label">Scale Min</span><span class="insp-val">0.8</span></div>
+      <div class="insp-row"><span class="insp-label">Scale Max</span><span class="insp-val">1.2</span></div>
+      <div class="insp-section">Collision</div>
+      <div class="insp-row"><span class="insp-label">Collision Preset</span><span class="insp-val">BlockAll (trees)</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Foliage Settings per Type</h3>
+    <p>Click on a foliage type in the list and expand its settings:</p>
+    <ul>
+      <li><strong>Density</strong> &mdash; how many instances per brush stroke. Higher = denser vegetation</li>
+      <li><strong>Scale Min / Max</strong> &mdash; random size variation (e.g. 0.8 to 1.2 for natural variety)</li>
+      <li><strong>Align to Surface</strong> &mdash; tilts meshes to match the terrain slope</li>
+      <li><strong>Random Yaw</strong> &mdash; randomises rotation so instances don&rsquo;t all face the same way</li>
+      <li><strong>Collision</strong> &mdash; enable for trees (so the camera doesn&rsquo;t clip through them), disable for grass (performance)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Where to Get Foliage Assets</h3>
+    <ul>
+      <li><strong>Fab (formerly Quixel Megascans):</strong> thousands of free photorealistic trees, grass, and plants. Open <strong>Window &rarr; Fab</strong> in UE5</li>
+      <li><strong>Starter Content:</strong> basic vegetation meshes if you enabled it during project creation</li>
+      <li>Search for: Meadow Pack, Tropical Jungle Pack, European Vegetation on the Fab marketplace</li>
+    </ul>
+    <div class="ue-note"><strong>Procedural placement:</strong> Right-click a foliage type &rarr; <strong>Fill</strong> to automatically scatter instances across the entire landscape. Then erase from areas where you don&rsquo;t want them (paths, water, building sites).</div>
+  </div>
+
+  <div class="warn-note"><strong>Performance tip:</strong> Grass meshes can create millions of instances. Keep grass foliage collision disabled and use LOD (Level of Detail) meshes. Start sparse and add more if performance allows.</div>
+
+  <div class="success-note"><strong>Milestone:</strong> Your landscape has trees, grass, and bushes scattered naturally across the terrain. The scene is starting to feel like a real place.</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- STEP 6: WATER                             -->
+<!-- ══════════════════════════════════════════ -->
+<div class="lesson" id="s6">
+  <div class="lesson-head">
+    <span class="lesson-num">06</span>
+    <h2 class="lesson-title">Water</h2>
+  </div>
+
+  <div class="card">
+    <p>UE5 has a built-in <strong>Water system</strong> that provides ready-made water body actors: oceans, rivers, and lakes. These come with realistic rendering, wave animation, and automatic landscape carving &mdash; the terrain lowers itself where water is placed.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Water Body Actors</h3>
+    <table class="compare">
+      <tr><th>Actor</th><th>What It Creates</th><th>Best For</th></tr>
+      <tr><td><strong>Water Body Ocean</strong></td><td>Infinite ocean plane with waves</td><td>Coastal or island landscapes</td></tr>
+      <tr><td><strong>Water Body River</strong></td><td>Spline-based flowing water</td><td>Streams, rivers through valleys</td></tr>
+      <tr><td><strong>Water Body Lake</strong></td><td>Enclosed body of still water</td><td>Ponds, lakes in terrain depressions</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Place a Water Body Lake</h3>
+    <ol class="steps">
+      <li>Before placing water, use the <strong>Sculpt</strong> tool to lower the terrain where the lake will sit &mdash; create a natural depression</li>
+      <li>In the <strong>Place Actors</strong> panel, search for <strong>Water Body Lake</strong></li>
+      <li>Drag it into the Viewport and position it over your depression</li>
+      <li>You will see a <strong>spline</strong> (a path with control points) defining the lake shape</li>
+      <li>Select individual spline points and <strong>move them</strong> (W key) to shape the lake outline</li>
+      <li><strong>Alt+click</strong> on the spline to add new control points for more complex shapes</li>
+      <li>Adjust the <strong>water level</strong> by moving the actor up or down on the Z axis</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Water Properties</h3>
+    <ul>
+      <li><strong>Water Color:</strong> adjust in the Water Material to match your environment (deep blue, murky green, clear turquoise)</li>
+      <li><strong>Opacity:</strong> controls how transparent the water is &mdash; shallow water should be more transparent</li>
+      <li><strong>Wave Speed / Height:</strong> controls surface animation (calm lake = low values)</li>
+      <li><strong>Auto-carve:</strong> the landscape automatically lowers where water overlaps &mdash; you may need to manually blend the shoreline</li>
+    </ul>
+    <div class="ue-note"><strong>Tip:</strong> Paint the landscape material around the shoreline with Dirt or a wet sand texture to create a natural transition from water to land.</div>
+  </div>
+
+  <div class="warn-note"><strong>Note:</strong> The Water plugin must be enabled. Go to <strong>Edit &rarr; Plugins</strong>, search for <strong>Water</strong>, and ensure it is checked. A restart may be required.</div>
+
+  <div class="success-note"><strong>Milestone:</strong> Your landscape has a body of water that sits naturally in the terrain. The shoreline blends with the surrounding ground material.</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- STEP 7: PROPS & POLISH                    -->
+<!-- ══════════════════════════════════════════ -->
+<div class="lesson" id="s7">
+  <div class="lesson-head">
+    <span class="lesson-num">07</span>
+    <h2 class="lesson-title">Props &amp; Polish</h2>
+  </div>
+
+  <div class="card">
+    <p>The final step is adding detail and atmosphere. A landscape with terrain, materials, foliage, and water is a solid foundation &mdash; but what makes it feel <span class="blue">alive</span> are the small details: scattered rocks, environmental sound, particle effects, and careful lighting adjustments.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Place Props &amp; Rocks</h3>
+    <ol class="steps">
+      <li>Download rock and stone assets from <strong>Fab</strong> &mdash; search for &ldquo;rock&rdquo; or &ldquo;boulder&rdquo;</li>
+      <li>Drag rocks into the scene along cliff edges, shorelines, and paths</li>
+      <li>Vary the <strong>scale</strong> and <strong>rotation</strong> of each rock so they look natural</li>
+      <li>Press the <strong>End</strong> key to snap props down to the terrain surface</li>
+      <li>Add structures if desired: a cabin, bridge, ruins, fences</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Decals for Blending</h3>
+    <p>Decals are flat textures projected onto surfaces. Use them to blend props into the environment:</p>
+    <ul>
+      <li>Place <strong>dirt decals</strong> at the base of rocks so they look embedded in the ground</li>
+      <li>Place <strong>leaf litter decals</strong> under trees to simulate fallen foliage</li>
+      <li>Place <strong>moss decals</strong> on rock faces and old structures</li>
+      <li>In the Content Browser, right-click &rarr; <strong>Material</strong> &rarr; set Material Domain to <strong>Deferred Decal</strong></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Particle Effects</h3>
+    <p>Add subtle motion to the environment using <strong>Niagara</strong> particle systems:</p>
+    <ul>
+      <li><strong>Dust motes</strong> &mdash; small floating particles lit by the sun</li>
+      <li><strong>Fireflies</strong> &mdash; tiny emissive dots for twilight or night scenes</li>
+      <li><strong>Falling leaves</strong> &mdash; spawned near trees and drifting downward</li>
+      <li><strong>Mist</strong> &mdash; low ground fog near water or in valleys</li>
+      <li>Find pre-made Niagara effects on Fab, or create simple ones in the Niagara Editor</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Ambient Sound</h3>
+    <ol class="steps">
+      <li>In <strong>Place Actors</strong>, search for <strong>Ambient Sound</strong></li>
+      <li>Drag it into the scene</li>
+      <li>In the Details Panel, assign a sound asset: wind, birds chirping, water flowing</li>
+      <li>Set <strong>Attenuation</strong> to control how far the sound carries</li>
+      <li>Place multiple sounds: wind on hilltops, water near the lake, birds near trees</li>
+    </ol>
+    <div class="ue-note"><strong>Tip:</strong> UE5 Starter Content includes basic ambient sounds. For more variety, check Fab for environment audio packs.</div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Final Lighting Pass</h3>
+    <p>With everything in place, do a final pass on your lighting to set the mood:</p>
+    <table class="compare">
+      <tr><th>Mood</th><th>Sun Angle</th><th>Fog</th><th>Post Process</th></tr>
+      <tr><td><strong>Golden Hour</strong></td><td>Low (10&ndash;20&deg;)</td><td>Warm, medium density</td><td>Warm white balance, slight bloom</td></tr>
+      <tr><td><strong>Overcast</strong></td><td>High but dimmed</td><td>Grey-blue, higher density</td><td>Desaturated, low contrast</td></tr>
+      <tr><td><strong>Night</strong></td><td>Below horizon</td><td>Dark blue, low density</td><td>Cool white balance, high exposure</td></tr>
+      <tr><td><strong>Misty Morning</strong></td><td>Low (5&ndash;15&deg;)</td><td>Dense, volumetric</td><td>Soft, slightly desaturated</td></tr>
+    </table>
+  </div>
+
+  <div class="hierarchy">
+    <div class="hierarchy-title">Outliner &mdash; Complete Landscape</div>
+    <div class="h-item"><span class="icon">&#9660;</span> Terrain</div>
+    <div class="h-item h-child selected">&#9632; Landscape</div>
+    <div class="h-item"><span class="icon">&#9660;</span> Lighting</div>
+    <div class="h-item h-child">&#9788; DirectionalLight</div>
+    <div class="h-item h-child">&#9788; SkyLight</div>
+    <div class="h-item h-child">&#9729; SkyAtmosphere</div>
+    <div class="h-item h-child">&#9729; VolumetricCloud</div>
+    <div class="h-item h-child">&#9729; ExponentialHeightFog</div>
+    <div class="h-item h-child">&#9632; PostProcessVolume</div>
+    <div class="h-item"><span class="icon">&#9660;</span> Water</div>
+    <div class="h-item h-child">&#9632; WaterBodyLake</div>
+    <div class="h-item"><span class="icon">&#9660;</span> Props</div>
+    <div class="h-item h-child">&#9632; SM_Rock_01</div>
+    <div class="h-item h-child">&#9632; SM_Rock_02</div>
+    <div class="h-item h-child">&#9632; SM_Cabin</div>
+    <div class="h-item"><span class="icon">&#9660;</span> Audio</div>
+    <div class="h-item h-child">&#9835; AmbientSound_Wind</div>
+    <div class="h-item h-child">&#9835; AmbientSound_Birds</div>
+    <div class="h-item h-child">&#9835; AmbientSound_Water</div>
+    <div class="h-item"><span class="icon">&#9660;</span> FX</div>
+    <div class="h-item h-child">&#10022; NS_DustMotes</div>
+    <div class="h-item h-child">&#10022; NS_FallingLeaves</div>
+  </div>
+
+  <div class="success-note"><strong>Milestone:</strong> Your landscape is complete. It has sculpted terrain, painted materials, sky and atmosphere, foliage, water, props, sound, and particle effects. It feels like a real place.</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- CHECKLIST                                 -->
+<!-- ══════════════════════════════════════════ -->
+<div class="lesson" id="checklist">
+  <div class="lesson-head">
+    <span class="lesson-num">&#10003;</span>
+    <h2 class="lesson-title">Final Checklist</h2>
+  </div>
+
+  <div class="card">
+    <p>Before you call your landscape finished, verify each element:</p>
+    <ul class="checklist">
+      <li><strong>Sculpted terrain</strong> with varied elevation &mdash; hills, valleys, and at least one flat area</li>
+      <li><strong>Painted landscape material</strong> with multiple layers (grass, dirt, rock) blended naturally</li>
+      <li><strong>Sky Atmosphere</strong> with Directional Light acting as the sun and Volumetric Clouds</li>
+      <li><strong>Sky Light</strong> set to Real Time Capture for dynamic ambient lighting</li>
+      <li><strong>Exponential Height Fog</strong> adding atmospheric depth and distance haze</li>
+      <li><strong>Foliage placed naturally</strong> &mdash; trees, grass, bushes with scale variation</li>
+      <li><strong>Water body</strong> (if applicable) &mdash; lake, river, or ocean with blended shoreline</li>
+      <li><strong>Props and environmental details</strong> &mdash; rocks, structures, decals at prop bases</li>
+      <li><strong>Particle effects</strong> &mdash; dust, leaves, mist for subtle environmental motion</li>
+      <li><strong>Ambient sound</strong> &mdash; wind, birds, water for audio atmosphere</li>
+      <li><strong>Post Process Volume</strong> &mdash; colour grading, exposure, bloom set for your mood</li>
+      <li><strong>Atmospheric mood</strong> &mdash; lighting, fog, and post-process working together</li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SHORTCUTS                                 -->
+<!-- ══════════════════════════════════════════ -->
+<div class="lesson" id="shortcuts">
+  <div class="lesson-head">
+    <span class="lesson-num">&#9000;</span>
+    <h2 class="lesson-title">Keyboard Shortcuts</h2>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Landscape &amp; Foliage</h3>
+    <div class="shortcut-grid">
+      <div class="shortcut"><kbd>Shift+3</kbd><span>Landscape Mode</span></div>
+      <div class="shortcut"><kbd>Shift+4</kbd><span>Foliage Mode</span></div>
+      <div class="shortcut"><kbd>Shift+1</kbd><span>Select Mode</span></div>
+      <div class="shortcut"><kbd>[ ]</kbd><span>Brush size down / up</span></div>
+      <div class="shortcut"><kbd>Shift + paint</kbd><span>Lower / erase</span></div>
+      <div class="shortcut"><kbd>Ctrl + paint</kbd><span>Smooth (sculpt)</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Navigation</h3>
+    <div class="shortcut-grid">
+      <div class="shortcut"><kbd>RMB + WASD</kbd><span>Fly through scene</span></div>
+      <div class="shortcut"><kbd>Alt + LMB</kbd><span>Orbit around point</span></div>
+      <div class="shortcut"><kbd>Scroll</kbd><span>Zoom in / out</span></div>
+      <div class="shortcut"><kbd>MMB drag</kbd><span>Pan the view</span></div>
+      <div class="shortcut"><kbd>F</kbd><span>Focus on selected</span></div>
+      <div class="shortcut"><kbd>G</kbd><span>Toggle game view</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Transform &amp; Editing</h3>
+    <div class="shortcut-grid">
+      <div class="shortcut"><kbd>W</kbd><span>Move (translate)</span></div>
+      <div class="shortcut"><kbd>E</kbd><span>Rotate</span></div>
+      <div class="shortcut"><kbd>R</kbd><span>Scale</span></div>
+      <div class="shortcut"><kbd>Alt + drag</kbd><span>Duplicate object</span></div>
+      <div class="shortcut"><kbd>End</kbd><span>Snap to surface</span></div>
+      <div class="shortcut"><kbd>Ctrl + S</kbd><span>Save all</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">General</h3>
+    <div class="shortcut-grid">
+      <div class="shortcut"><kbd>Ctrl + Z</kbd><span>Undo</span></div>
+      <div class="shortcut"><kbd>Ctrl + G</kbd><span>Group actors</span></div>
+      <div class="shortcut"><kbd>Ctrl + D</kbd><span>Duplicate (Outliner)</span></div>
+      <div class="shortcut"><kbd>Delete</kbd><span>Remove selected</span></div>
+      <div class="shortcut"><kbd>H</kbd><span>Hide selected</span></div>
+      <div class="shortcut"><kbd>F9</kbd><span>Screenshot</span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>
+    <p>4E Virtual Design &middot; Immersive Environments Module &middot; CCT University of Galway</p>
+</footer>
+
+</body>
+</html>

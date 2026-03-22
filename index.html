@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4E Unreal Journeys</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07080f;--surface:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.08);--text:#e8eaf0;--dim:#7a7f96;--mono:'Space Mono',monospace;--display:'Syne',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--display);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:60px 60px}
+.badge{display:inline-block;background:rgba(217,70,239,0.12);border:1px solid rgba(217,70,239,0.25);color:#d946ef;font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:5px 16px;border-radius:100px;margin-bottom:20px}
+h1{font-size:clamp(32px,6vw,56px);font-weight:800;letter-spacing:-2px;margin-bottom:12px;text-align:center}
+h1 .ue{color:#d946ef}
+.sub{color:var(--dim);font-size:15px;margin-bottom:40px;text-align:center;max-width:520px;line-height:1.7}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;max-width:1100px;width:100%;position:relative;z-index:1}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 24px;text-decoration:none;color:var(--text);transition:all 0.25s;backdrop-filter:blur(8px);display:flex;flex-direction:column;gap:10px}
+.card:hover{transform:translateY(-4px)}
+.card .icon{font-size:28px}
+.card h2{font-size:20px;font-weight:800;letter-spacing:-0.5px}
+.card p{font-size:13px;color:var(--dim);line-height:1.7}
+.card .tag{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-top:auto;padding-top:8px}
+.card-magenta{--accent:#d946ef}.card-magenta .tag{color:#d946ef}.card-magenta:hover{border-color:#d946ef;background:rgba(217,70,239,0.04)}
+.card-cyan{--accent:#38bdf8}.card-cyan .tag{color:#38bdf8}.card-cyan:hover{border-color:#38bdf8;background:rgba(56,189,248,0.04)}
+.card-orange{--accent:#f97316}.card-orange .tag{color:#f97316}.card-orange:hover{border-color:#f97316;background:rgba(249,115,22,0.04)}
+.card-emerald{--accent:#34d399}.card-emerald .tag{color:#34d399}.card-emerald:hover{border-color:#34d399;background:rgba(52,211,153,0.04)}
+footer{margin-top:50px;text-align:center;color:var(--dim);font-family:var(--mono);font-size:10px;letter-spacing:1px;position:relative;z-index:1}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="badge">Immersive Environments &middot; Week 10</div>
+<h1>4E <span class="ue">Unreal</span> Journeys</h1>
+<p class="sub">Build-along guides for Unreal Engine 5. Pick a journey below and follow step by step. No prior experience needed.</p>
+
+<div class="grid">
+  <a href="Unreal_Journey/unreal-journey.html" class="card card-magenta">
+    <div class="icon">&#127916;</div>
+    <h2>Cinematic Journey</h2>
+    <p>Build a cinematic environment showcase &mdash; lighting with Lumen, cameras, Sequencer animation, and Movie Render Queue output.</p>
+    <div class="tag">Assignment Guide &rarr;</div>
+  </a>
+  <a href="Unreal_Journey/unreal-materials-journey.html" class="card card-cyan">
+    <div class="icon">&#127912;</div>
+    <h2>Materials Journey</h2>
+    <p>Master UE5 materials &mdash; the node graph, PBR properties, Material Instances, emissive glow, and decals.</p>
+    <div class="tag">Visual Quality &rarr;</div>
+  </a>
+  <a href="Unreal_Journey/unreal-blueprints-journey.html" class="card card-orange">
+    <div class="icon">&#9881;</div>
+    <h2>Blueprints Journey</h2>
+    <p>Visual scripting in UE5 &mdash; open doors, toggle lights, trigger events. No code, just nodes and wires.</p>
+    <div class="tag">Interactivity &rarr;</div>
+  </a>
+  <a href="Unreal_Journey/unreal-landscape-journey.html" class="card card-emerald">
+    <div class="icon">&#127956;</div>
+    <h2>Landscape Journey</h2>
+    <p>Build outdoor environments &mdash; terrain sculpting, foliage painting, sky atmosphere, and volumetric clouds.</p>
+    <div class="tag">Open Worlds &rarr;</div>
+  </a>
+</div>
+
+<footer>4E Virtual Design &middot; Immersive Environments Module &middot; CCT University of Galway</footer>
+</body>
+</html>
