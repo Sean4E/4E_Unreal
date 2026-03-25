@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blueprints Masterclass Part 3 — Advanced</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07080f;--surface:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.08);--accent:#ef4444;--accent2:#f87171;--accent3:#38bdf8;--accent4:#34d399;--text:#e8eaf0;--dim:#7a7f96;--code-bg:rgba(0,0,0,0.5);--mono:'Space Mono',monospace;--display:'Syne',sans-serif}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--display);line-height:1.7}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(239,68,68,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(239,68,68,0.02) 1px,transparent 1px);background-size:60px 60px}
+
+/* Hero */
+.hero{position:relative;padding:70px 40px 30px;text-align:center;z-index:1}
+.hero-badge{display:inline-block;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:var(--accent);font-family:var(--mono);font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:6px 18px;border-radius:100px;margin-bottom:24px}
+.hero h1{font-size:clamp(34px,6vw,68px);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:16px}
+.hero h1 .ue{color:var(--accent)}
+.hero h1 .bp{color:var(--text)}
+.hero p{font-size:16px;color:var(--dim);max-width:640px;margin:0 auto 12px;line-height:1.8}
+.hero-sub{font-family:var(--mono);font-size:11px;color:#3f4460;letter-spacing:1px}
+
+/* Nav */
+.nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:0 40px 40px;z-index:1;position:relative}
+.nav a{background:var(--surface);border:1px solid var(--border);color:var(--dim);font-family:var(--mono);font-size:10px;padding:6px 14px;border-radius:100px;text-decoration:none;transition:all 0.2s;letter-spacing:0.5px}
+.nav a:hover{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.4);color:var(--accent)}
+.nav-div{width:100%;text-align:center;font-family:var(--mono);font-size:10px;color:#2a2d3a;letter-spacing:2px;padding:4px 0}
+
+/* Layout */
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.lesson{margin-bottom:50px}
+.lesson-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:20px}
+.lesson-num{font-family:var(--mono);font-size:12px;color:var(--accent);background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.25);padding:4px 10px;border-radius:6px;white-space:nowrap;margin-top:5px}
+.lesson-title{font-size:clamp(20px,3vw,30px);font-weight:800;letter-spacing:-1px;line-height:1.1}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 26px;margin-bottom:16px;backdrop-filter:blur(8px)}
+.card p{font-size:15px;color:#c5cad8;line-height:1.85}
+.card strong{color:var(--accent);font-weight:700}
+.card .mag{color:var(--accent2)}
+.card .blue{color:var(--accent3)}
+.card .green{color:var(--accent4)}
+.card ul,.card ol{margin-left:1.5rem;color:#c5cad8;line-height:1.85;font-size:15px}
+.card li{margin-bottom:0.35rem}
+.analogy{background:rgba(56,189,248,0.06);border-left:3px solid var(--accent3);padding:12px 18px;border-radius:0 10px 10px 0;margin:12px 0;font-size:14px;color:#a5c8e8;font-style:italic}
+.ue-note{background:rgba(239,68,68,0.06);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 10px 10px 0;margin:12px 0 0;font-size:13px;color:#e8a5a5;font-style:italic}
+.warn-note{background:rgba(248,113,113,0.06);border-left:3px solid var(--accent2);padding:10px 16px;border-radius:0 10px 10px 0;margin:12px 0 0;font-size:13px;color:#e8b5b5;font-style:italic}
+.success-note{background:rgba(52,211,153,0.06);border-left:3px solid var(--accent4);padding:10px 16px;border-radius:0 10px 10px 0;margin:12px 0 0;font-size:13px;color:#a5e8c8}
+
+/* Code */
+pre{background:var(--code-bg);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.85;color:var(--text);margin-bottom:16px;white-space:pre}
+code{font-family:var(--mono);background:var(--code-bg);padding:2px 6px;border-radius:4px;font-size:12px}
+
+/* Grids */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.two>div,.three>div{min-width:0}
+
+/* Inspector / Details mock */
+.inspector{background:#2d2d2d;border:1px solid #555;border-radius:12px;padding:0;margin:12px 0;overflow:hidden;font-family:'Segoe UI',sans-serif;font-size:13px}
+.insp-header{background:#3d3d3d;padding:8px 14px;font-weight:600;display:flex;align-items:center;gap:8px;border-bottom:1px solid #555}
+.insp-header .cb{width:14px;height:14px;border:2px solid var(--accent);border-radius:3px;display:inline-block;background:var(--accent)}
+.insp-header .icon{font-size:16px}
+.insp-body{padding:10px 14px}
+.insp-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #3a3a3a}
+.insp-row:last-child{border-bottom:none}
+.insp-label{color:#bbb;font-size:12px}
+.insp-val{background:#1a1a1a;padding:3px 10px;border-radius:4px;color:#ddd;font-size:12px;min-width:100px;text-align:right}
+.insp-slot{background:#1a1a1a;padding:3px 10px;border-radius:4px;color:#888;font-size:12px;min-width:160px;text-align:center;border:1px dashed #555}
+.insp-slot.filled{color:var(--accent);border-style:solid;border-color:var(--accent)}
+.insp-section{font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;padding:8px 0 4px;border-bottom:1px solid #3a3a3a;font-weight:700;font-family:var(--mono)}
+
+/* Hierarchy / Outliner mock */
+.hierarchy{background:#2d2d2d;border:1px solid #555;border-radius:12px;padding:12px 14px;margin:12px 0;font-family:var(--mono);font-size:12px}
+.hierarchy-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:8px;font-weight:700}
+.h-item{padding:3px 0;color:#ccc;display:flex;align-items:center;gap:6px}
+.h-item .icon{font-size:14px}
+.h-child{margin-left:20px}
+.h-child2{margin-left:40px}
+.h-item.selected{color:var(--accent);background:rgba(239,68,68,0.1);margin:0 -14px;padding:3px 14px;border-radius:4px}
+
+/* Blueprint Graph mock */
+.bp-graph{background:#1a1a2e;border:1px solid #333;border-radius:12px;padding:20px;margin:12px 0;position:relative;overflow:hidden;min-height:200px}
+.bp-graph::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:20px 20px}
+.bp-graph-title{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#555;margin-bottom:12px;position:relative;z-index:1}
+.bp-node{background:#2a2a3e;border:1px solid #444;border-radius:8px;display:inline-block;min-width:180px;font-family:'Segoe UI',sans-serif;font-size:12px;position:relative;z-index:1;vertical-align:top}
+.bp-node-header{padding:6px 12px;border-radius:7px 7px 0 0;font-weight:600;font-size:11px;display:flex;align-items:center;gap:6px}
+.bp-node-header.event{background:linear-gradient(135deg,#8b0000,#5c0000);color:#ff6b6b}
+.bp-node-header.function{background:linear-gradient(135deg,#1a3a5c,#0d2240);color:#4a9eff}
+.bp-node-header.flow{background:linear-gradient(135deg,#3a3a3a,#2a2a2a);color:#ccc}
+.bp-node-header.pure{background:linear-gradient(135deg,#1a4a2a,#0d3018);color:#4aff6b}
+.bp-node-header.macro{background:linear-gradient(135deg,#4a3a5c,#2d2040);color:#b88aff}
+.bp-node-body{padding:8px 12px}
+.bp-pin{display:flex;align-items:center;gap:6px;padding:2px 0;font-size:11px;color:#aaa}
+.bp-pin .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.bp-pin .dot.exec{background:#fff;border:1px solid #888;border-radius:2px;width:9px;height:7px}
+.bp-pin .dot.bool{background:#CC0000}
+.bp-pin .dot.float{background:#A8E24D}
+.bp-pin .dot.string{background:#FF00A6}
+.bp-pin .dot.object{background:#0E6FC2}
+.bp-pin .dot.vector{background:#FFC300}
+.bp-pin .dot.int{background:#1CB569}
+.bp-pin .dot.rotator{background:#6B7FD7}
+.bp-pin .dot.transform{background:#E58740}
+.bp-pin .dot.struct{background:#0E6FC2}
+.bp-pin .dot.array{background:#1CB569}
+.bp-pin-out{justify-content:flex-end;text-align:right}
+.bp-wire{position:absolute;z-index:0}
+.bp-nodes-row{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;position:relative;z-index:1}
+
+/* Pin legend */
+.pin-legend{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0;font-size:12px;font-family:var(--mono)}
+.pin-legend-item{display:flex;align-items:center;gap:6px;color:#aaa}
+.pin-legend-item .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.pin-legend-item .dot.exec{background:#fff;border:1px solid #888;border-radius:2px;width:11px;height:8px}
+.pin-legend-item .dot.bool{background:#CC0000}
+.pin-legend-item .dot.float{background:#A8E24D}
+.pin-legend-item .dot.string{background:#FF00A6}
+.pin-legend-item .dot.object{background:#0E6FC2}
+.pin-legend-item .dot.vector{background:#FFC300}
+.pin-legend-item .dot.int{background:#1CB569}
+.pin-legend-item .dot.rotator{background:#6B7FD7}
+.pin-legend-item .dot.transform{background:#E58740}
+
+/* Keyboard shortcut cards */
+.shortcut-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:12px 0}
+.shortcut{background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.15);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.shortcut kbd{background:#1a1a1a;border:1px solid #444;border-radius:5px;padding:3px 8px;font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap;box-shadow:0 2px 0 #333}
+.shortcut span{color:#bbb;font-size:12px}
+
+/* Sections */
+.part-div{max-width:1100px;margin:30px auto 20px;padding:0 24px}
+.part-inner{border:1px solid var(--border);border-radius:12px;padding:20px 24px;text-align:center;background:linear-gradient(135deg,rgba(239,68,68,0.06),transparent)}
+.part-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:3px;color:var(--accent);margin-bottom:4px}
+.part-title{font-size:22px;font-weight:800;margin-bottom:4px}
+.part-desc{color:var(--dim);font-size:14px}
+
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:40px 0}
+
+/* Steps list */
+.steps{counter-reset:step;list-style:none;margin:0}
+.steps li{counter-increment:step;position:relative;padding-left:36px;margin-bottom:12px;color:#c5cad8;font-size:15px}
+.steps li::before{content:counter(step);position:absolute;left:0;top:2px;width:24px;height:24px;line-height:24px;text-align:center;background:var(--accent);color:#000;border-radius:50%;font-size:12px;font-weight:700;font-family:var(--mono)}
+
+/* Checklist */
+.checklist{list-style:none;margin:0}
+.checklist li{padding:8px 0;border-bottom:1px solid var(--border);color:#c5cad8;font-size:15px;padding-left:28px;position:relative}
+.checklist li:last-child{border-bottom:none}
+.checklist li::before{content:'\2610';position:absolute;left:0;font-size:18px;color:var(--accent)}
+
+/* Comparison table */
+.compare{width:100%;border-collapse:collapse;margin:12px 0}
+.compare th{text-align:left;padding:8px 12px;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid var(--border);font-family:var(--mono)}
+.compare td{padding:8px 12px;border-bottom:1px solid var(--border);color:#c5cad8;font-size:14px}
+.compare td code{background:var(--code-bg);padding:2px 6px;border-radius:4px;font-size:12px}
+
+footer{text-align:center;padding:36px 24px;color:var(--dim);font-family:var(--mono);font-size:11px;border-top:1px solid var(--border);margin-top:50px;position:relative;z-index:1}
+
+@media(max-width:850px){.two,.three{grid-template-columns:1fr}.hero{padding:50px 20px 20px}.nav{padding:0 16px 24px}.wrap{padding:0 14px}pre{font-size:11px;padding:14px}.bp-nodes-row{flex-direction:column}.shortcut-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.shortcut-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Advanced Visual Scripting</div>
+  <h1>Blueprints <span style="color:#fff">Masterclass</span></h1>
+  <p>Part 3 &mdash; Advanced</p>
+  <p>Eight advanced systems that transform your Blueprints from prototypes into production-ready gameplay. Save systems, inventories, procedural generation, networking, and optimisation.</p>
+  <div class="hero-sub">Week 10 &middot; Blueprints Masterclass &middot; Unreal Engine 5</div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <a href="#s16">16 Save &amp; Load</a>
+  <a href="#s17">17 Inventory System</a>
+  <a href="#s18">18 Components</a>
+  <a href="#s19">19 Procedural Gen</a>
+  <a href="#s20">20 Material Control</a>
+  <a href="#s21">21 Niagara Particles</a>
+  <a href="#s22">22 Networking</a>
+  <a href="#s23">23 Optimisation</a>
+  <div class="nav-div">--</div>
+  <a href="#pins">Pin Colours</a>
+  <a href="#next">What's Next?</a>
+  <div class="nav-div">--</div>
+  <a href="blueprints-masterclass-02.html">&larr; Part 2</a>
+  <a href="unreal-journey.html">Dashboard</a>
+</div>
+
+<!-- PIN COLOUR LEGEND -->
+<div class="wrap">
+  <div class="card" id="pins">
+    <h3 style="color:var(--accent);margin-bottom:8px">Blueprint Pin Colours &mdash; Quick Reference</h3>
+    <div class="pin-legend">
+      <div class="pin-legend-item"><div class="dot exec"></div> Execution</div>
+      <div class="pin-legend-item"><div class="dot bool"></div> Boolean</div>
+      <div class="pin-legend-item"><div class="dot int"></div> Integer</div>
+      <div class="pin-legend-item"><div class="dot float"></div> Float</div>
+      <div class="pin-legend-item"><div class="dot string"></div> String</div>
+      <div class="pin-legend-item"><div class="dot vector"></div> Vector</div>
+      <div class="pin-legend-item"><div class="dot object"></div> Object Ref</div>
+      <div class="pin-legend-item"><div class="dot rotator"></div> Rotator</div>
+      <div class="pin-legend-item"><div class="dot transform"></div> Transform</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PART: PERSISTENCE & DATA -->
+<!-- ============================================================ -->
+<div class="part-div"><div class="part-inner">
+  <div class="part-label">Persistence &amp; Data</div>
+  <div class="part-title">Saving, Loading &amp; Inventory</div>
+  <p class="part-desc">Store player progress across sessions and build data-driven systems that track items, stats, and game state.</p>
+</div></div>
+
+<div class="wrap">
+
+<!-- ============================================================ -->
+<!-- STEP 16: SAVE & LOAD SYSTEM -->
+<!-- ============================================================ -->
+<div class="lesson" id="s16">
+  <div class="lesson-head">
+    <span class="lesson-num">16</span>
+    <h2 class="lesson-title">Save &amp; Load System</h2>
+  </div>
+
+  <div class="card">
+    <p><strong>A SaveGame object is a special UE5 class designed for persistent data.</strong> It acts as a container &mdash; you define which variables should be saved (health, location, inventory), and the engine serialises them to disk. When the player loads, those variables are deserialised back into memory, restoring the exact game state.</p>
+    <div class="analogy">Think of a SaveGame object like a filing cabinet. You decide which folders go inside (your variables), and the engine handles locking and unlocking the cabinet (writing to and reading from disk).</div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Create the SaveGame Blueprint</h3>
+    <ol class="steps">
+      <li>In the Content Browser, right-click &rarr; <strong>Blueprint Class</strong></li>
+      <li>Under "All Classes", search for <strong>SaveGame</strong> and select it as parent</li>
+      <li>Name it <code>BP_MySaveGame</code></li>
+      <li>Open it and add variables: <code>PlayerHealth</code> (Float), <code>PlayerLocation</code> (Vector), <code>InventoryItems</code> (Array of Strings)</li>
+      <li>Compile and Save</li>
+    </ol>
+  </div>
+
+  <!-- Mock: SaveGame class variables -->
+  <div class="inspector">
+    <div class="insp-header"><span class="cb"></span><span class="icon">&#128190;</span> BP_MySaveGame &mdash; Variables</div>
+    <div class="insp-body">
+      <div class="insp-section">SaveGame Variables</div>
+      <div class="insp-row"><span class="insp-label">PlayerHealth</span><span class="insp-val" style="color:#A8E24D">Float &mdash; 100.0</span></div>
+      <div class="insp-row"><span class="insp-label">PlayerLocation</span><span class="insp-val" style="color:#FFC300">Vector</span></div>
+      <div class="insp-row"><span class="insp-label">InventoryItems</span><span class="insp-val" style="color:#FF00A6">String[ ]</span></div>
+      <div class="insp-row"><span class="insp-label">CurrentLevel</span><span class="insp-val" style="color:#FF00A6">String</span></div>
+      <div class="insp-row"><span class="insp-label">PlayTime</span><span class="insp-val" style="color:#A8E24D">Float &mdash; 0.0</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Key Nodes</h3>
+    <table class="compare">
+      <tr><th>Node</th><th>What It Does</th></tr>
+      <tr><td><code>Create Save Game Object</code></td><td>Creates an instance of your SaveGame class in memory</td></tr>
+      <tr><td><code>Save Game to Slot</code></td><td>Writes the object to disk with a named slot (e.g., "Slot1")</td></tr>
+      <tr><td><code>Load Game from Slot</code></td><td>Reads a saved file from disk and returns a SaveGame object</td></tr>
+      <tr><td><code>Does Save Game Exist</code></td><td>Checks if a slot has data &mdash; use before loading to avoid errors</td></tr>
+      <tr><td><code>Async Save Game to Slot</code></td><td>Non-blocking save &mdash; game does not freeze during write</td></tr>
+    </table>
+    <div class="ue-note"><strong>Async saves</strong> are critical for large save files. Synchronous saves can cause visible frame hitches, especially on consoles or when saving large inventories.</div>
+  </div>
+
+  <!-- Mock: Save Graph -->
+  <div class="bp-graph">
+    <div class="bp-graph-title">Event Graph &mdash; Save Player Data</div>
+    <div class="bp-nodes-row">
+      <div class="bp-node">
+        <div class="bp-node-header event">&#9658; Save Requested</div>
+        <div class="bp-node-body">
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header function">&#9670; Create Save Game Object</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin"><div class="dot object"></div> <span>Class: BP_MySaveGame</span></div>
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+          <div class="bp-pin bp-pin-out"><span>Return Value</span> <div class="dot object"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header function">&#9670; Set PlayerHealth</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin"><div class="dot object"></div> <span>Target</span></div>
+          <div class="bp-pin"><div class="dot float"></div> <span>PlayerHealth</span></div>
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header function">&#9670; Save Game to Slot</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin"><div class="dot object"></div> <span>Save Game Object</span></div>
+          <div class="bp-pin"><div class="dot string"></div> <span>Slot Name: "Slot1"</span></div>
+          <div class="bp-pin"><div class="dot int"></div> <span>User Index: 0</span></div>
+          <div class="bp-pin bp-pin-out"><span>Return (bool)</span> <div class="dot bool"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mock: Load Graph -->
+  <div class="bp-graph">
+    <div class="bp-graph-title">Event Graph &mdash; Load Player Data</div>
+    <div class="bp-nodes-row">
+      <div class="bp-node">
+        <div class="bp-node-header event">&#9658; Event BeginPlay</div>
+        <div class="bp-node-body">
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header pure">&#9670; Does Save Game Exist</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot string"></div> <span>Slot Name: "Slot1"</span></div>
+          <div class="bp-pin bp-pin-out"><span>Return Value</span> <div class="dot bool"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header flow">&#9670; Branch</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin"><div class="dot bool"></div> <span>Condition</span></div>
+          <div class="bp-pin bp-pin-out"><span>True</span> <div class="dot exec"></div></div>
+          <div class="bp-pin bp-pin-out"><span>False</span> <div class="dot exec"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header function">&#9670; Load Game from Slot</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin"><div class="dot string"></div> <span>Slot Name: "Slot1"</span></div>
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+          <div class="bp-pin bp-pin-out"><span>Return Value</span> <div class="dot object"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Multiple Save Slots</h3>
+    <p>Support multiple saves by varying the <span class="mag">Slot Name</span> string. A common pattern is <code>"SaveSlot_1"</code>, <code>"SaveSlot_2"</code>, <code>"SaveSlot_3"</code>. Build a UI that lists available slots, checks which ones exist with <code>Does Save Game Exist</code>, and lets the player choose which to load or overwrite.</p>
+    <div class="ue-note"><strong>Pro tip:</strong> Store a "last played" timestamp in each save so you can show "Continue" on the most recent slot.</div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Practical: Save on Checkpoint, Load on Death</h3>
+    <ol class="steps">
+      <li>Create an overlap trigger volume at a checkpoint location</li>
+      <li>On overlap, create a SaveGame object, populate it with current Health and Location</li>
+      <li>Call <code>Save Game to Slot</code> with slot "Checkpoint"</li>
+      <li>On player death, call <code>Load Game from Slot</code> with "Checkpoint"</li>
+      <li>Cast the result to <code>BP_MySaveGame</code>, read PlayerHealth and PlayerLocation</li>
+      <li>Set the player's health and teleport them to the saved location</li>
+    </ol>
+  </div>
+
+  <div class="success-note"><strong>Milestone:</strong> You can create a SaveGame class, save player data to a named slot, check if saves exist, load them back, and support multiple save slots with async writes for performance.</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================================ -->
+<!-- STEP 17: INVENTORY SYSTEM -->
+<!-- ============================================================ -->
+<div class="lesson" id="s17">
+  <div class="lesson-head">
+    <span class="lesson-num">17</span>
+    <h2 class="lesson-title">Inventory System</h2>
+  </div>
+
+  <div class="card">
+    <p><strong>An inventory system is built on Arrays of Structs.</strong> A <span class="mag">Struct</span> groups related data together &mdash; an item's name, icon, quantity, and type live in one tidy package. An <span class="mag">Array</span> holds multiple structs, forming your inventory list. Together, they let you add, remove, stack, and display items in a grid UI.</p>
+    <div class="analogy">A Struct is like a card in a card game &mdash; it has a name, a picture, and stats all on one card. Your inventory Array is the hand of cards you are holding.</div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Create the Inventory Struct</h3>
+    <ol class="steps">
+      <li>Content Browser &rarr; right-click &rarr; <strong>Blueprints &rarr; Structure</strong></li>
+      <li>Name it <code>S_InventoryItem</code></li>
+      <li>Add variables: <code>ItemName</code> (String), <code>Icon</code> (Texture2D), <code>Quantity</code> (Integer), <code>ItemType</code> (E_ItemType enum)</li>
+      <li>Create enum <code>E_ItemType</code> with values: Weapon, Consumable, Material, Key, Quest</li>
+    </ol>
+  </div>
+
+  <!-- Mock: Struct definition -->
+  <div class="inspector">
+    <div class="insp-header"><span class="cb"></span><span class="icon">&#128230;</span> S_InventoryItem &mdash; Structure</div>
+    <div class="insp-body">
+      <div class="insp-section">Members</div>
+      <div class="insp-row"><span class="insp-label">ItemName</span><span class="insp-val" style="color:#FF00A6">String</span></div>
+      <div class="insp-row"><span class="insp-label">Icon</span><span class="insp-val" style="color:#0E6FC2">Texture2D</span></div>
+      <div class="insp-row"><span class="insp-label">Quantity</span><span class="insp-val" style="color:#1CB569">Integer</span></div>
+      <div class="insp-row"><span class="insp-label">ItemType</span><span class="insp-val" style="color:#CC0000">E_ItemType</span></div>
+      <div class="insp-row"><span class="insp-label">Description</span><span class="insp-val" style="color:#FF00A6">String</span></div>
+      <div class="insp-row"><span class="insp-label">bIsStackable</span><span class="insp-val" style="color:#CC0000">Boolean</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Core Operations</h3>
+    <table class="compare">
+      <tr><th>Operation</th><th>How</th></tr>
+      <tr><td><strong>Add Item</strong></td><td>Loop through array &mdash; if item exists and is stackable, increment Quantity. Otherwise, <code>Add</code> a new struct to the array.</td></tr>
+      <tr><td><strong>Remove Item</strong></td><td>Find by name, decrement Quantity. If Quantity reaches 0, <code>Remove at Index</code>.</td></tr>
+      <tr><td><strong>Stack Items</strong></td><td>Check <code>bIsStackable</code> before incrementing. Non-stackable items always get a new array entry.</td></tr>
+      <tr><td><strong>Find Item</strong></td><td>Use a <code>For Each Loop</code> with <code>Break</code> &mdash; compare ItemName to find the target.</td></tr>
+    </table>
+    <div class="ue-note"><strong>TMap alternative:</strong> For faster lookups, use a <code>TMap&lt;FName, S_InventoryItem&gt;</code> (key-value pairs). Maps offer O(1) lookup by item name instead of O(n) array searches. However, Maps are harder to display in order in a UI grid.</div>
+  </div>
+
+  <!-- Mock: Pickup → Add to Inventory graph -->
+  <div class="bp-graph">
+    <div class="bp-graph-title">Event Graph &mdash; Pickup Item &rarr; Add to Inventory</div>
+    <div class="bp-nodes-row">
+      <div class="bp-node">
+        <div class="bp-node-header event">&#9658; OnComponentBeginOverlap</div>
+        <div class="bp-node-body">
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+          <div class="bp-pin bp-pin-out"><span>Other Actor</span> <div class="dot object"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header function">&#9670; Cast to BP_PlayerCharacter</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin"><div class="dot object"></div> <span>Object</span></div>
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+          <div class="bp-pin bp-pin-out"><span>As BP_Player</span> <div class="dot object"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header function">&#9670; Add Item to Inventory</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin"><div class="dot struct"></div> <span>Item: S_InventoryItem</span></div>
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+          <div class="bp-pin bp-pin-out"><span>Success</span> <div class="dot bool"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header function">&#9670; Destroy Actor</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Inventory UI Widgets</h3>
+    <p>Build two Widget Blueprints:</p>
+    <ul>
+      <li><strong>WBP_InventorySlot</strong> &mdash; displays one item: icon image, quantity text, border highlight. Receives an <code>S_InventoryItem</code> and updates its visuals.</li>
+      <li><strong>WBP_InventoryGrid</strong> &mdash; a <code>Uniform Grid Panel</code> or <code>Wrap Box</code> that spawns WBP_InventorySlot widgets for each item in the array.</li>
+    </ul>
+    <div class="ue-note"><strong>Drag and drop:</strong> Override <code>OnDragDetected</code> in WBP_InventorySlot to create a <code>DragDropOperation</code>. Override <code>OnDrop</code> in the target slot to swap or move items. Use a visual "ghost" widget as the drag visual.</div>
+  </div>
+
+  <!-- Mock: Grid widget hierarchy -->
+  <div class="hierarchy">
+    <div class="hierarchy-title">WBP_InventoryGrid &mdash; Widget Hierarchy</div>
+    <div class="h-item selected"><span class="icon">&#9660;</span> CanvasPanel (Root)</div>
+    <div class="h-item h-child">&#9632; BackgroundBorder</div>
+    <div class="h-item h-child"><span class="icon">&#9660;</span> VerticalBox</div>
+    <div class="h-item h-child2">&#128196; TitleText ("Inventory")</div>
+    <div class="h-item h-child2"><span class="icon">&#9660;</span> UniformGridPanel (GridPanel)</div>
+    <div class="h-item h-child2" style="margin-left:60px">&#128230; WBP_InventorySlot [0]</div>
+    <div class="h-item h-child2" style="margin-left:60px">&#128230; WBP_InventorySlot [1]</div>
+    <div class="h-item h-child2" style="margin-left:60px">&#128230; WBP_InventorySlot [...]</div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Practical: Full Pickup-to-UI Flow</h3>
+    <ol class="steps">
+      <li>Create <code>BP_Pickup</code> actor with a StaticMesh, SphereCollision, and an <code>ItemData</code> variable (type: S_InventoryItem)</li>
+      <li>On overlap with player, call the player's <code>AddItem</code> function, passing ItemData</li>
+      <li>AddItem checks for stacking, adds to the Inventory array, and calls <code>OnInventoryChanged</code> dispatcher</li>
+      <li>WBP_InventoryGrid binds to OnInventoryChanged &mdash; clears grid, loops through array, spawns slots</li>
+      <li>Click a slot to call <code>UseItem</code> or <code>DropItem</code> function</li>
+    </ol>
+  </div>
+
+  <div class="success-note"><strong>Milestone:</strong> You can define an inventory struct, add/remove/stack items in an array, display them in a grid widget, and handle pickup-to-UI flow with event dispatchers.</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================================ -->
+<!-- STEP 18: COMPONENT ARCHITECTURE -->
+<!-- ============================================================ -->
+<div class="lesson" id="s18">
+  <div class="lesson-head">
+    <span class="lesson-num">18</span>
+    <h2 class="lesson-title">Component Architecture</h2>
+  </div>
+
+  <div class="card">
+    <p><strong>Actor Components are reusable behaviour modules you attach to any Actor.</strong> Instead of duplicating health logic across your player, enemies, and destructible barrels, you write it once in a component and plug it in everywhere. This is composition over inheritance &mdash; build complex Actors by combining simple, focused components.</p>
+    <div class="analogy">Components are like LEGO bricks. A "Health" brick, a "Movement" brick, a "Combat" brick. Snap different bricks onto different Actors to give them different abilities, without rewriting anything.</div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Two Types of Components</h3>
+    <table class="compare">
+      <tr><th>Type</th><th>Has Transform?</th><th>Use Case</th></tr>
+      <tr><td><strong>Actor Component</strong></td><td>No &mdash; pure logic</td><td>Health system, inventory manager, buff/debuff tracker</td></tr>
+      <tr><td><strong>Scene Component</strong></td><td>Yes &mdash; position, rotation, scale</td><td>Attach points, weapon sockets, camera booms</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Create a Health Component</h3>
+    <ol class="steps">
+      <li>Content Browser &rarr; right-click &rarr; <strong>Blueprint Class &rarr; Actor Component</strong></li>
+      <li>Name it <code>BP_HealthComponent</code></li>
+      <li>Add variables: <code>Health</code> (Float, default 100), <code>MaxHealth</code> (Float, default 100)</li>
+      <li>Add an Event Dispatcher: <code>OnDeath</code></li>
+      <li>Create a function: <code>TakeDamage</code> with input <code>DamageAmount</code> (Float)</li>
+      <li>Inside TakeDamage: subtract DamageAmount from Health, clamp to 0. If Health &lt;= 0, call OnDeath</li>
+    </ol>
+  </div>
+
+  <!-- Mock: Component Details -->
+  <div class="inspector">
+    <div class="insp-header"><span class="cb"></span><span class="icon">&#9881;</span> BP_HealthComponent &mdash; Details</div>
+    <div class="insp-body">
+      <div class="insp-section">Variables</div>
+      <div class="insp-row"><span class="insp-label">Health</span><span class="insp-val" style="color:#A8E24D">100.0</span></div>
+      <div class="insp-row"><span class="insp-label">MaxHealth</span><span class="insp-val" style="color:#A8E24D">100.0</span></div>
+      <div class="insp-row"><span class="insp-label">bIsDead</span><span class="insp-val" style="color:#CC0000">false</span></div>
+      <div class="insp-section">Functions</div>
+      <div class="insp-row"><span class="insp-label">TakeDamage</span><span class="insp-val">DamageAmount: Float</span></div>
+      <div class="insp-row"><span class="insp-label">Heal</span><span class="insp-val">HealAmount: Float</span></div>
+      <div class="insp-section">Event Dispatchers</div>
+      <div class="insp-row"><span class="insp-label">OnDeath</span><span class="insp-val" style="color:#ef4444">Broadcast</span></div>
+      <div class="insp-row"><span class="insp-label">OnHealthChanged</span><span class="insp-val" style="color:#ef4444">Broadcast (NewHealth)</span></div>
+    </div>
+  </div>
+
+  <!-- Mock: TakeDamage function graph -->
+  <div class="bp-graph">
+    <div class="bp-graph-title">Function &mdash; TakeDamage (BP_HealthComponent)</div>
+    <div class="bp-nodes-row">
+      <div class="bp-node">
+        <div class="bp-node-header event">&#9658; TakeDamage (Input)</div>
+        <div class="bp-node-body">
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+          <div class="bp-pin bp-pin-out"><span>DamageAmount</span> <div class="dot float"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header pure">&#9670; Clamp (Float)</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot float"></div> <span>Health - Damage</span></div>
+          <div class="bp-pin"><div class="dot float"></div> <span>Min: 0</span></div>
+          <div class="bp-pin"><div class="dot float"></div> <span>Max: MaxHealth</span></div>
+          <div class="bp-pin bp-pin-out"><span>Return</span> <div class="dot float"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header function">&#9670; SET Health</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin"><div class="dot float"></div> <span>Health</span></div>
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header flow">&#9670; Branch (Health &lt;= 0)</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin"><div class="dot bool"></div> <span>Condition</span></div>
+          <div class="bp-pin bp-pin-out"><span>True &rarr; OnDeath</span> <div class="dot exec"></div></div>
+          <div class="bp-pin bp-pin-out"><span>False</span> <div class="dot exec"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Attach to Any Actor</h3>
+    <p>Open any Actor Blueprint (player, enemy, barrel), click <strong>+ Add Component</strong>, search for <code>BP_HealthComponent</code>. Each Actor can have different MaxHealth values &mdash; set them per-instance in the Details panel. The component handles all damage and death logic internally.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Communication Patterns</h3>
+    <ul>
+      <li><strong>Owner reads component:</strong> <code>Get Component by Class</code> &rarr; call functions directly</li>
+      <li><strong>Component notifies owner:</strong> Use Event Dispatchers. The owner binds to <code>OnDeath</code> and reacts (play death animation, destroy actor, etc.)</li>
+      <li><strong>External access:</strong> Other Actors get a reference to the target, call <code>Get Component by Class</code>, then call TakeDamage</li>
+    </ul>
+  </div>
+
+  <div class="success-note"><strong>Milestone:</strong> You can create reusable Actor Components, build a HealthComponent with TakeDamage and OnDeath, attach it to multiple Actors, and communicate between components and owners via dispatchers.</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================================ -->
+<!-- PART: RUNTIME SYSTEMS -->
+<!-- ============================================================ -->
+</div><!-- close wrap -->
+
+<div class="part-div"><div class="part-inner">
+  <div class="part-label">Runtime Systems</div>
+  <div class="part-title">Procedural Generation &amp; Material Control</div>
+  <p class="part-desc">Spawn actors at runtime, generate content procedurally, and control materials dynamically to bring your world to life.</p>
+</div></div>
+
+<div class="wrap">
+
+<!-- ============================================================ -->
+<!-- STEP 19: PROCEDURAL GENERATION -->
+<!-- ============================================================ -->
+<div class="lesson" id="s19">
+  <div class="lesson-head">
+    <span class="lesson-num">19</span>
+    <h2 class="lesson-title">Procedural Generation</h2>
+  </div>
+
+  <div class="card">
+    <p><strong>Procedural generation means creating content at runtime using algorithms instead of hand-placing everything.</strong> In Blueprints, this starts with <code>Spawn Actor from Class</code> &mdash; a node that creates any Actor at a specified location and rotation while the game is running. Combined with random streams and loops, you can generate entire levels, scatter props, or build dungeons.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Key Concepts</h3>
+    <table class="compare">
+      <tr><th>Concept</th><th>What It Does</th></tr>
+      <tr><td><code>Spawn Actor from Class</code></td><td>Creates an Actor instance at a location/rotation at runtime</td></tr>
+      <tr><td><strong>Random Stream</strong></td><td>A seeded random number generator. Same seed = same results every time. Essential for reproducible randomness.</td></tr>
+      <tr><td><strong>Spline Component</strong></td><td>A curve you define in the editor. Place objects along it at regular intervals for paths, fences, cables, etc.</td></tr>
+      <tr><td><strong>Instanced Static Mesh</strong></td><td>Renders thousands of identical meshes in one draw call. Use for grass, rocks, scattered props.</td></tr>
+    </table>
+  </div>
+
+  <!-- Mock: SpawnActor loop graph -->
+  <div class="bp-graph">
+    <div class="bp-graph-title">Event Graph &mdash; Spawn Room Grid (Dungeon Generator)</div>
+    <div class="bp-nodes-row">
+      <div class="bp-node">
+        <div class="bp-node-header event">&#9658; Event BeginPlay</div>
+        <div class="bp-node-body">
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header macro">&#9670; For Loop</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin"><div class="dot int"></div> <span>First Index: 0</span></div>
+          <div class="bp-pin"><div class="dot int"></div> <span>Last Index: NumRooms</span></div>
+          <div class="bp-pin bp-pin-out"><span>Loop Body</span> <div class="dot exec"></div></div>
+          <div class="bp-pin bp-pin-out"><span>Index</span> <div class="dot int"></div></div>
+          <div class="bp-pin bp-pin-out"><span>Completed</span> <div class="dot exec"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header pure">&#9670; Random from Stream</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot object"></div> <span>Stream</span></div>
+          <div class="bp-pin"><div class="dot object"></div> <span>RoomClasses (Array)</span></div>
+          <div class="bp-pin bp-pin-out"><span>Random Room</span> <div class="dot object"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header function">&#9670; Spawn Actor from Class</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin"><div class="dot object"></div> <span>Class: Random Room</span></div>
+          <div class="bp-pin"><div class="dot transform"></div> <span>Spawn Transform</span></div>
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+          <div class="bp-pin bp-pin-out"><span>Return Value</span> <div class="dot object"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Spline-Based Placement</h3>
+    <p>A <span class="mag">Spline Component</span> defines a curve in 3D space. You can place objects along it programmatically:</p>
+    <ol class="steps">
+      <li>Add a <strong>Spline Component</strong> to an Actor Blueprint</li>
+      <li>Shape the spline in the Viewport by adding/moving control points</li>
+      <li>In BeginPlay, use a <code>For Loop</code> from 0 to <code>GetNumberOfSplinePoints - 1</code></li>
+      <li>At each index, call <code>GetLocationAtSplinePoint</code> and <code>GetRotationAtSplinePoint</code></li>
+      <li>Spawn or place objects at those transforms</li>
+    </ol>
+    <div class="ue-note"><strong>For smooth distribution:</strong> Use <code>GetLocationAtDistanceAlongSpline</code> with evenly spaced distances instead of spline points for uniform spacing.</div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Instanced Static Mesh for Performance</h3>
+    <p>When scattering hundreds of identical meshes (rocks, grass, crates), use an <strong>Instanced Static Mesh Component</strong> (ISM) instead of spawning individual Actors. ISM renders all instances in a single draw call, drastically reducing overhead.</p>
+    <ul>
+      <li>Add an <code>Instanced Static Mesh Component</code> to your generator Actor</li>
+      <li>Set its mesh to your prop (rock, barrel, etc.)</li>
+      <li>In your loop, call <code>Add Instance (World Transform)</code> instead of Spawn Actor</li>
+      <li>For large open worlds, use <strong>Hierarchical Instanced Static Mesh</strong> (HISM) for automatic LOD and culling</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Practical: Dungeon Room Generator</h3>
+    <ol class="steps">
+      <li>Create 3-4 room Actor Blueprints (BP_Room_A, BP_Room_B, etc.) with doorways at standard positions</li>
+      <li>Store them in a <code>RoomClasses</code> array (Array of Actor Class)</li>
+      <li>Create a <code>BP_DungeonGenerator</code> with a <code>RandomStream</code> variable (expose Seed to allow reproducibility)</li>
+      <li>In BeginPlay, loop N times. Each iteration picks a random room, calculates its position on a grid, and spawns it</li>
+      <li>Add corridor connectors between adjacent rooms</li>
+      <li>Scatter props inside each room using ISM with random offsets</li>
+    </ol>
+  </div>
+
+  <div class="success-note"><strong>Milestone:</strong> You can spawn Actors at runtime, use Random Streams for reproducible results, place objects along splines, and use Instanced Static Meshes for efficient prop scattering.</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================================ -->
+<!-- STEP 20: MATERIAL PARAMETER CONTROL -->
+<!-- ============================================================ -->
+<div class="lesson" id="s20">
+  <div class="lesson-head">
+    <span class="lesson-num">20</span>
+    <h2 class="lesson-title">Material Parameter Control</h2>
+  </div>
+
+  <div class="card">
+    <p><strong>Dynamic Material Instances let you change material properties at runtime from Blueprints.</strong> You cannot modify a shared material directly (it would affect every object using it). Instead, you create a Dynamic Material Instance &mdash; a per-object copy &mdash; and change its parameters freely. This powers health-based colour changes, dissolve effects, damage flashes, and more.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Setup: Parameterised Material</h3>
+    <ol class="steps">
+      <li>In your Material, create parameters: right-click a value node &rarr; <strong>Convert to Parameter</strong></li>
+      <li>Name your parameters clearly: <code>BaseColor</code>, <code>EmissiveStrength</code>, <code>DissolveAmount</code></li>
+      <li>Scalar Parameters control numbers (float). Vector Parameters control colours (RGBA)</li>
+      <li>Apply this material to your mesh in the editor</li>
+    </ol>
+  </div>
+
+  <!-- Mock: CreateDynamic → SetParam graph -->
+  <div class="bp-graph">
+    <div class="bp-graph-title">Event Graph &mdash; Health-Based Colour Change</div>
+    <div class="bp-nodes-row">
+      <div class="bp-node">
+        <div class="bp-node-header event">&#9658; Event BeginPlay</div>
+        <div class="bp-node-body">
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header function">&#9670; Create Dynamic Material Instance</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin"><div class="dot object"></div> <span>Target: Mesh Component</span></div>
+          <div class="bp-pin"><div class="dot int"></div> <span>Element Index: 0</span></div>
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+          <div class="bp-pin bp-pin-out"><span>Return Value</span> <div class="dot object"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header function">&#9670; SET DynMaterial (Variable)</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin"><div class="dot object"></div> <span>DynMaterial</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bp-graph">
+    <div class="bp-graph-title">Function &mdash; Update Colour from Health</div>
+    <div class="bp-nodes-row">
+      <div class="bp-node">
+        <div class="bp-node-header pure">&#9670; Lerp (Linear Color)</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot vector"></div> <span>A: Red (1,0,0)</span></div>
+          <div class="bp-pin"><div class="dot vector"></div> <span>B: Green (0,1,0)</span></div>
+          <div class="bp-pin"><div class="dot float"></div> <span>Alpha: Health / MaxHealth</span></div>
+          <div class="bp-pin bp-pin-out"><span>Return</span> <div class="dot vector"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header function">&#9670; Set Vector Parameter Value</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin"><div class="dot object"></div> <span>Target: DynMaterial</span></div>
+          <div class="bp-pin"><div class="dot string"></div> <span>Param: "BaseColor"</span></div>
+          <div class="bp-pin"><div class="dot vector"></div> <span>Value: Lerp Result</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Dissolve Effect with Timeline</h3>
+    <ol class="steps">
+      <li>In your material, multiply a <strong>Noise Texture</strong> by a <code>DissolveAmount</code> scalar parameter</li>
+      <li>Feed the result into <strong>Opacity Mask</strong> (set Blend Mode to Masked)</li>
+      <li>In Blueprint, add a <strong>Timeline</strong> that lerps DissolveAmount from 0 to 1 over 2 seconds</li>
+      <li>On each Timeline update, call <code>Set Scalar Parameter Value</code> on DynMaterial</li>
+      <li>Trigger the Timeline on death: the mesh dissolves away</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Material Parameter Collection</h3>
+    <p><strong>Material Parameter Collections (MPC)</strong> are global parameter sets. Every material that references an MPC reads the same values. Change one float in the collection, and every material responds.</p>
+    <ul>
+      <li><strong>Use case:</strong> Day/night cycle &mdash; a single "TimeOfDay" float controls sky colour, fog tint, and emissive intensity across all materials</li>
+      <li>Create in Content Browser: right-click &rarr; <strong>Materials &rarr; Material Parameter Collection</strong></li>
+      <li>In Blueprint: <code>Set Scalar Parameter Value</code> and <code>Set Vector Parameter Value</code> on the MPC asset</li>
+    </ul>
+    <div class="ue-note"><strong>Performance:</strong> MPCs are very efficient. They update a single GPU constant buffer rather than updating each material individually.</div>
+  </div>
+
+  <div class="success-note"><strong>Milestone:</strong> You can create Dynamic Material Instances, control scalar and vector parameters from Blueprint, build a health-based colour system, create dissolve effects with Timelines, and use Material Parameter Collections for global material control.</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================================ -->
+<!-- PART: VFX & MULTIPLAYER -->
+<!-- ============================================================ -->
+</div><!-- close wrap -->
+
+<div class="part-div"><div class="part-inner">
+  <div class="part-label">VFX &amp; Multiplayer</div>
+  <div class="part-title">Particles, Networking &amp; Polish</div>
+  <p class="part-desc">Add visual effects with Niagara, introduce multiplayer concepts, and optimise your Blueprints for production quality.</p>
+</div></div>
+
+<div class="wrap">
+
+<!-- ============================================================ -->
+<!-- STEP 21: NIAGARA PARTICLE SYSTEMS -->
+<!-- ============================================================ -->
+<div class="lesson" id="s21">
+  <div class="lesson-head">
+    <span class="lesson-num">21</span>
+    <h2 class="lesson-title">Niagara Particle Systems</h2>
+  </div>
+
+  <div class="card">
+    <p><strong>Niagara is UE5's GPU-accelerated particle system.</strong> From Blueprints, you spawn, activate, and control Niagara systems to create hit effects, trails, ambient particles, weather, and much more. You do not need to build Niagara systems from scratch &mdash; you can use existing ones and drive them with Blueprint data.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Key Blueprint Nodes</h3>
+    <table class="compare">
+      <tr><th>Node</th><th>What It Does</th></tr>
+      <tr><td><code>Spawn System at Location</code></td><td>Creates a one-shot Niagara effect at a world position (fire-and-forget)</td></tr>
+      <tr><td><code>Spawn System Attached</code></td><td>Attaches a Niagara system to a component (follows it)</td></tr>
+      <tr><td><code>Activate / Deactivate</code></td><td>Turns an existing Niagara Component on or off</td></tr>
+      <tr><td><code>Set Niagara Variable (Float/Vector/etc.)</code></td><td>Passes runtime data from Blueprint into the particle system</td></tr>
+    </table>
+  </div>
+
+  <!-- Mock: SpawnSystemAtLocation on hit -->
+  <div class="bp-graph">
+    <div class="bp-graph-title">Event Graph &mdash; Spawn Hit Effect on Impact</div>
+    <div class="bp-nodes-row">
+      <div class="bp-node">
+        <div class="bp-node-header event">&#9658; On Hit (Projectile)</div>
+        <div class="bp-node-body">
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+          <div class="bp-pin bp-pin-out"><span>Hit Location</span> <div class="dot vector"></div></div>
+          <div class="bp-pin bp-pin-out"><span>Hit Normal</span> <div class="dot vector"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header function">&#9670; Spawn System at Location</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin"><div class="dot object"></div> <span>System: NS_HitSparks</span></div>
+          <div class="bp-pin"><div class="dot vector"></div> <span>Location: Hit Location</span></div>
+          <div class="bp-pin"><div class="dot rotator"></div> <span>Rotation: from Hit Normal</span></div>
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+          <div class="bp-pin bp-pin-out"><span>Return Value</span> <div class="dot object"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node">
+        <div class="bp-node-header function">&#9670; Destroy Actor (Self)</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Practical Examples</h3>
+    <ul>
+      <li><strong>Hit sparks on impact:</strong> On the projectile's <code>OnHit</code> event, call <code>Spawn System at Location</code> with the hit point and normal rotation, then destroy the projectile</li>
+      <li><strong>Trail behind projectile:</strong> Add a <code>Niagara Component</code> to the projectile Blueprint. Set it to your trail system. It activates automatically when the actor spawns and follows it through the air</li>
+      <li><strong>Environmental ambience:</strong> Place a Niagara System actor in the level (dust motes, fireflies, fog wisps). Use <code>Set Niagara Variable</code> to change intensity based on time of day or weather</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Lifecycle Management</h3>
+    <ul>
+      <li><strong>Auto-Destroy:</strong> Check "Auto Destroy" on the Niagara Component so one-shot effects clean themselves up after finishing</li>
+      <li><strong>Pooling concept:</strong> For frequently spawned effects (bullet impacts), consider an object pool &mdash; pre-spawn N Niagara Components, activate/deactivate as needed instead of spawning/destroying each time</li>
+      <li><strong>Deactivate vs Destroy:</strong> Deactivate lets particles finish naturally. Destroy kills them immediately. Use Deactivate for graceful fade-out.</li>
+    </ul>
+    <div class="ue-note"><strong>Performance:</strong> Niagara systems with GPU simulation (GPU Sim) can handle millions of particles. CPU systems are more flexible but slower. Choose based on your needs.</div>
+  </div>
+
+  <div class="success-note"><strong>Milestone:</strong> You can spawn Niagara effects at locations, attach trail systems to actors, pass Blueprint data into particles, and manage particle lifecycle with auto-destroy and pooling.</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================================ -->
+<!-- STEP 22: NETWORKING BASICS -->
+<!-- ============================================================ -->
+<div class="lesson" id="s22">
+  <div class="lesson-head">
+    <span class="lesson-num">22</span>
+    <h2 class="lesson-title">Networking Basics (Multiplayer Concepts)</h2>
+  </div>
+
+  <div class="card">
+    <p><strong>UE5 uses a Server-Client model for multiplayer.</strong> One machine is the authoritative <span class="mag">Server</span> &mdash; it owns the "truth" of the game state. All other machines are <span class="mag">Clients</span> that send input to the server and receive updates back. The server validates everything, preventing cheating and ensuring consistency.</p>
+    <div class="analogy">Think of the server as a referee. Players (clients) request actions ("I want to open this door"), and the referee decides if it is allowed, then tells everyone the result.</div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Key Networking Concepts</h3>
+    <table class="compare">
+      <tr><th>Concept</th><th>What It Does</th></tr>
+      <tr><td><strong>Replicated Variable</strong></td><td>A variable marked "Replicated" in Details. The server's value is automatically sent to all clients.</td></tr>
+      <tr><td><strong>RepNotify</strong></td><td>A replicated variable that calls a function (<code>OnRep_VariableName</code>) on clients when it changes. Use for visual updates.</td></tr>
+      <tr><td><strong>Server RPC</strong></td><td>A function that runs only on the server. Clients call it to request actions.</td></tr>
+      <tr><td><strong>Client RPC</strong></td><td>A function the server calls that runs only on the owning client. For client-specific feedback.</td></tr>
+      <tr><td><strong>Multicast RPC</strong></td><td>A function the server calls that runs on the server AND all clients. For effects everyone should see.</td></tr>
+      <tr><td><strong>Has Authority</strong></td><td>Returns true on the server (or for locally controlled actors). Use to gate server-only logic.</td></tr>
+    </table>
+  </div>
+
+  <!-- Mock: Replication settings -->
+  <div class="inspector">
+    <div class="insp-header"><span class="cb"></span><span class="icon">&#127760;</span> BP_NetworkedDoor &mdash; Replication Settings</div>
+    <div class="insp-body">
+      <div class="insp-section">Actor Replication</div>
+      <div class="insp-row"><span class="insp-label">Replicates</span><span class="insp-val" style="color:#34d399">&#10003; True</span></div>
+      <div class="insp-row"><span class="insp-label">Net Load on Client</span><span class="insp-val" style="color:#34d399">&#10003; True</span></div>
+      <div class="insp-section">Variable: bIsOpen</div>
+      <div class="insp-row"><span class="insp-label">Replication</span><span class="insp-val" style="color:#ef4444">RepNotify</span></div>
+      <div class="insp-row"><span class="insp-label">Type</span><span class="insp-val" style="color:#CC0000">Boolean</span></div>
+      <div class="insp-section">Functions</div>
+      <div class="insp-row"><span class="insp-label">Server_ToggleDoor</span><span class="insp-val" style="color:#38bdf8">Run on Server</span></div>
+      <div class="insp-row"><span class="insp-label">Multicast_PlayDoorSound</span><span class="insp-val" style="color:#38bdf8">Multicast</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">RPC Flow: Replicated Door</h3>
+    <p>Here is the complete flow for a door that one player opens and all players see:</p>
+    <ol class="steps">
+      <li>Player interacts with door &rarr; calls <code>Server_ToggleDoor</code> (Server RPC)</li>
+      <li>Server receives the call, validates it (is the player close enough?)</li>
+      <li>Server sets <code>bIsOpen = true</code> (this variable is RepNotify)</li>
+      <li>Engine replicates bIsOpen to all clients automatically</li>
+      <li>On each client, <code>OnRep_bIsOpen</code> fires &rarr; plays open/close animation</li>
+      <li>Server also calls <code>Multicast_PlayDoorSound</code> so everyone hears it</li>
+    </ol>
+  </div>
+
+  <!-- Mock: RPC flow diagram as Blueprint graph -->
+  <div class="bp-graph">
+    <div class="bp-graph-title">Flow &mdash; Client Request &rarr; Server Validates &rarr; All Clients Update</div>
+    <div class="bp-nodes-row">
+      <div class="bp-node">
+        <div class="bp-node-header event">&#9658; Interact (Client Input)</div>
+        <div class="bp-node-body">
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node" style="border-color:#38bdf8">
+        <div class="bp-node-header function" style="background:linear-gradient(135deg,#1a3a5c,#0d2240)">&#9670; Server_ToggleDoor (Server RPC)</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin bp-pin-out"><span>exec (runs on server)</span> <div class="dot exec"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node" style="border-color:#34d399">
+        <div class="bp-node-header function" style="background:linear-gradient(135deg,#1a4a2a,#0d3018)">&#9670; SET bIsOpen (RepNotify)</div>
+        <div class="bp-node-body">
+          <div class="bp-pin"><div class="dot exec"></div> <span>exec</span></div>
+          <div class="bp-pin"><div class="dot bool"></div> <span>bIsOpen: Toggle</span></div>
+          <div class="bp-pin bp-pin-out"><span>exec</span> <div class="dot exec"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;color:#555;font-size:24px;padding:0 4px">&#x27A1;</div>
+      <div class="bp-node" style="border-color:#ef4444">
+        <div class="bp-node-header event" style="background:linear-gradient(135deg,#5c1a1a,#401010)">&#9658; OnRep_bIsOpen (All Clients)</div>
+        <div class="bp-node-body">
+          <div class="bp-pin bp-pin-out"><span>exec &rarr; Play Anim</span> <div class="dot exec"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Setting Up Replication</h3>
+    <ol class="steps">
+      <li>In your Actor Blueprint, check <strong>Replicates</strong> in the Class Defaults</li>
+      <li>For variables: select the variable, set Replication to <strong>Replicated</strong> or <strong>RepNotify</strong></li>
+      <li>For functions: select the function, set Replicates to <strong>Run on Server</strong>, <strong>Run on Owning Client</strong>, or <strong>Multicast</strong></li>
+      <li>Mark server RPCs as <strong>Reliable</strong> for important actions (door toggle) or <strong>Unreliable</strong> for cosmetic ones (particle spawn)</li>
+    </ol>
+    <div class="warn-note"><strong>Common mistake:</strong> Never change replicated variables on the client. Only the server should set them. Clients read the replicated values and respond visually through RepNotify.</div>
+  </div>
+
+  <div class="success-note"><strong>Milestone:</strong> You understand the Server-Client model, can mark variables as Replicated/RepNotify, create Server/Client/Multicast RPCs, and build a replicated door that syncs across all players.</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================================ -->
+<!-- STEP 23: OPTIMISATION & BEST PRACTICES -->
+<!-- ============================================================ -->
+<div class="lesson" id="s23">
+  <div class="lesson-head">
+    <span class="lesson-num">23</span>
+    <h2 class="lesson-title">Optimisation &amp; Best Practices</h2>
+  </div>
+
+  <div class="card">
+    <p><strong>Well-organised, performant Blueprints are the mark of a professional developer.</strong> This step covers the patterns that separate prototype-quality Blueprints from production-ready ones: avoiding Tick abuse, caching casts, naming conventions, profiling tools, and clean graph organisation.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Avoid Tick Where Possible</h3>
+    <p>Event Tick runs every frame. For 60fps, that is 60 calls per second per Actor. Multiply by hundreds of Actors and you have serious overhead. Use these alternatives:</p>
+    <table class="compare">
+      <tr><th>Instead of Tick...</th><th>Use This</th><th>Why</th></tr>
+      <tr><td>Checking a value every frame</td><td><strong>Event Dispatchers</strong></td><td>React only when value actually changes</td></tr>
+      <tr><td>Periodic checks</td><td><strong>Set Timer by Event</strong></td><td>Runs at your chosen interval, not every frame</td></tr>
+      <tr><td>Waiting for something</td><td><strong>Timelines / Delays</strong></td><td>Fire-and-forget, no polling needed</td></tr>
+      <tr><td>Collision checks</td><td><strong>Overlap Events</strong></td><td>Physics engine handles detection efficiently</td></tr>
+    </table>
+    <div class="ue-note"><strong>If you must use Tick:</strong> Disable it by default (<code>Start with Tick Enabled = false</code>) and only enable it during the exact window you need it. Disable it again when done.</div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Cache Cast Results</h3>
+    <p>Casting is not free. Every <code>Cast To</code> node performs a type check. If you cast to the same class multiple times (e.g., Cast to BP_PlayerCharacter), <strong>cache the result in a variable</strong> and reuse it.</p>
+    <div class="two">
+      <div class="card" style="border-color:#CC0000;margin-bottom:0">
+        <h3 style="color:#CC0000;margin-bottom:8px;font-size:14px">Bad: Cast Every Time</h3>
+<pre>Event Tick
+  Cast to BP_Player  ← runs 60x/sec
+    Get Health
+    Update UI</pre>
+      </div>
+      <div class="card" style="border-color:#34d399;margin-bottom:0">
+        <h3 style="color:#34d399;margin-bottom:8px;font-size:14px">Good: Cache Once</h3>
+<pre>BeginPlay
+  Cast to BP_Player
+    SET PlayerRef ← cached
+
+OnHealthChanged (Dispatcher)
+  PlayerRef → Get Health
+  Update UI</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Blueprint Nativization</h3>
+    <p><strong>Blueprint Nativization</strong> converts Blueprints to C++ during packaging, giving them near-native performance. In UE5, this has evolved into "Blueprint Compilation Manager" optimisations. For critical-path Blueprints (AI, physics, high-frequency logic), consider:</p>
+    <ul>
+      <li>Moving hot-path logic to C++ functions and calling them from Blueprint</li>
+      <li>Using <code>BlueprintNativeEvent</code> for functions that need both C++ speed and Blueprint overrideability</li>
+      <li>Keeping Blueprint for prototyping and high-level flow, C++ for low-level performance-critical code</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Profiling Tools</h3>
+    <table class="compare">
+      <tr><th>Tool</th><th>How to Use</th><th>What It Shows</th></tr>
+      <tr><td><code>stat game</code></td><td>Console command during play</td><td>Frame time, game thread, render thread costs</td></tr>
+      <tr><td><code>stat blueprint</code></td><td>Console command during play</td><td>Time spent in each Blueprint, per-function breakdown</td></tr>
+      <tr><td><strong>Blueprint Debugger</strong></td><td>F9 on a node to set breakpoint; play the game</td><td>Step through execution, inspect variable values in real time</td></tr>
+      <tr><td><strong>Unreal Insights</strong></td><td>Launch with <code>-trace=default</code></td><td>Detailed profiling: CPU, GPU, memory, loading, per-frame analysis</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Organisation &amp; Cleanliness</h3>
+    <ul>
+      <li><strong>Comments:</strong> Select a group of nodes &rarr; press <kbd>C</kbd> to wrap them in a comment box. Describe what the group does.</li>
+      <li><strong>Reroute nodes:</strong> Double-click a wire to add a reroute node. Clean up long, tangled wires.</li>
+      <li><strong>Collapse to Function:</strong> Select nodes &rarr; right-click &rarr; Collapse to Function. Reduces visual clutter and makes logic reusable.</li>
+      <li><strong>Collapse to Macro:</strong> Same as function but supports multiple exec outputs (latent-friendly).</li>
+      <li><strong>Folders:</strong> Organise your Content Browser with clear folder hierarchies: <code>/Blueprints/Characters/</code>, <code>/Blueprints/Items/</code>, etc.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Naming Conventions</h3>
+    <table class="compare">
+      <tr><th>Prefix</th><th>Type</th><th>Example</th></tr>
+      <tr><td><code>BP_</code></td><td>Blueprint Actor</td><td><code>BP_PlayerCharacter</code></td></tr>
+      <tr><td><code>WBP_</code></td><td>Widget Blueprint</td><td><code>WBP_InventoryGrid</code></td></tr>
+      <tr><td><code>BPI_</code></td><td>Blueprint Interface</td><td><code>BPI_Interactable</code></td></tr>
+      <tr><td><code>S_</code></td><td>Struct</td><td><code>S_InventoryItem</code></td></tr>
+      <tr><td><code>E_</code></td><td>Enum</td><td><code>E_ItemType</code></td></tr>
+      <tr><td><code>DT_</code></td><td>Data Table</td><td><code>DT_WeaponStats</code></td></tr>
+      <tr><td><code>M_</code></td><td>Material</td><td><code>M_Character_Base</code></td></tr>
+      <tr><td><code>MI_</code></td><td>Material Instance</td><td><code>MI_Character_Red</code></td></tr>
+      <tr><td><code>NS_</code></td><td>Niagara System</td><td><code>NS_HitSparks</code></td></tr>
+      <tr><td><code>ABP_</code></td><td>Animation Blueprint</td><td><code>ABP_PlayerCharacter</code></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Performance: Good vs Bad Patterns</h3>
+    <table class="compare">
+      <tr><th>Bad Pattern</th><th>Good Pattern</th><th>Impact</th></tr>
+      <tr><td>Cast on Tick</td><td>Cache cast in BeginPlay</td><td>Removes per-frame type checks</td></tr>
+      <tr><td>Get All Actors of Class on Tick</td><td>Cache array once, update via events</td><td>Avoids full-world scan every frame</td></tr>
+      <tr><td>Spawn/Destroy particles per hit</td><td>Object pool with Activate/Deactivate</td><td>Eliminates allocation overhead</td></tr>
+      <tr><td>Complex math on Tick for animation</td><td>Timeline or Curve-driven animation</td><td>Engine-optimised interpolation</td></tr>
+      <tr><td>100 Actors each with Tick enabled</td><td>Manager Actor with one Timer</td><td>One update call instead of 100</td></tr>
+      <tr><td>Spawning 500 individual mesh actors</td><td>Instanced Static Mesh Component</td><td>One draw call instead of 500</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Common Mistakes &amp; Fixes</h3>
+    <ul>
+      <li><strong>Forgetting to Compile:</strong> Always Compile after changes. Uncompiled Blueprints show a yellow question mark and may not work in-game.</li>
+      <li><strong>Circular references:</strong> Actor A references Actor B which references Actor A. Use interfaces or dispatchers to break the cycle.</li>
+      <li><strong>Not checking IsValid:</strong> Always validate object references before using them. A destroyed actor's reference becomes null.</li>
+      <li><strong>Putting everything in one Blueprint:</strong> Split logic into components, functions, and child Blueprints. A 200-node Event Graph is a maintenance nightmare.</li>
+      <li><strong>Ignoring the output log:</strong> Warnings and errors appear in the Output Log. Read them &mdash; they almost always tell you exactly what went wrong.</li>
+    </ul>
+  </div>
+
+  <!-- Before/After cleanup -->
+  <div class="two">
+    <div class="card" style="border-color:#CC0000;margin-bottom:0">
+      <h3 style="color:#CC0000;margin-bottom:8px;font-size:14px">Before: Messy Graph</h3>
+<pre>BeginPlay
+ → Get All Actors of Class
+   → For Each Loop
+     → Cast to BP_Enemy
+       → Cast to BP_Enemy (again!)
+         → Get Health
+           → Branch
+             → Print String
+               → Set Text
+ (wires crossing everywhere,
+  no comments, no functions)</pre>
+    </div>
+    <div class="card" style="border-color:#34d399;margin-bottom:0">
+      <h3 style="color:#34d399;margin-bottom:8px;font-size:14px">After: Clean Graph</h3>
+<pre>BeginPlay
+ → [Comment: Cache Enemy List]
+   → InitEnemyReferences()
+
+OnEnemyHealthChanged (Dispatcher)
+ → [Comment: Update UI]
+   → UpdateHealthDisplay(Enemy)</pre>
+<p style="font-size:12px;color:#a5e8c8;margin-top:8px">Functions encapsulate logic. Dispatchers replace polling. Comments explain intent.</p>
+    </div>
+  </div>
+
+  <div class="success-note"><strong>Milestone:</strong> You know how to avoid Tick abuse, cache casts, profile Blueprints, follow naming conventions, and organise clean, maintainable graphs. Your Blueprints are production-ready.</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================================ -->
+<!-- WHAT'S NEXT -->
+<!-- ============================================================ -->
+<div class="lesson" id="next">
+  <div class="lesson-head">
+    <span class="lesson-num">&#8734;</span>
+    <h2 class="lesson-title">What's Next?</h2>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Gameplay Ability System (GAS)</h3>
+    <p>For complex combat, abilities, cooldowns, and status effects, UE5's <strong>Gameplay Ability System</strong> provides a production-proven framework. It handles ability activation, attribute modification (health, mana, stamina), gameplay effects (buffs, debuffs, damage-over-time), and gameplay tags for state management. GAS is used in Fortnite and many AAA titles.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">C++ Integration</h3>
+    <p><strong>When to move from Blueprint to C++:</strong></p>
+    <ul>
+      <li><strong>Performance-critical logic:</strong> AI decision trees running every frame, complex math, large data processing</li>
+      <li><strong>Base classes:</strong> Write core systems in C++, expose them to Blueprint for designers to extend</li>
+      <li><strong>Engine access:</strong> Some engine features are only available in C++</li>
+      <li><strong>Team workflows:</strong> C++ for programmers, Blueprints for designers &mdash; both contributing to the same project</li>
+    </ul>
+    <div class="ue-note"><strong>The sweet spot:</strong> C++ for the foundation (base character, game mode, core systems). Blueprints for content-specific behaviour (this specific enemy's attack pattern, this level's puzzle logic).</div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Plugins &amp; Marketplace</h3>
+    <ul>
+      <li><strong>Fab (formerly Marketplace):</strong> Thousands of free and paid assets, plugins, and complete starter projects</li>
+      <li><strong>Common plugins:</strong> Enhanced Input System (built-in), Common UI, Online Subsystem for multiplayer</li>
+      <li><strong>Community plugins:</strong> Dialogue systems, quest frameworks, procedural generation tools</li>
+      <li><strong>Building your own:</strong> Package reusable Blueprints and C++ code as plugins for use across projects</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Portfolio Tips</h3>
+    <ul>
+      <li><strong>Document your Blueprints:</strong> Take high-resolution screenshots of clean, well-commented graphs. Employers want to see how you think, not just the final result.</li>
+      <li><strong>Show before/after:</strong> Demonstrate iteration &mdash; first prototype vs polished version</li>
+      <li><strong>Record gameplay:</strong> Short videos showing your systems in action (30-60 seconds each)</li>
+      <li><strong>Explain your decisions:</strong> Write brief descriptions of why you chose certain patterns (components vs inheritance, events vs tick, etc.)</li>
+      <li><strong>Version control:</strong> Use Git or Perforce. Show commit history to demonstrate consistent progress.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent);margin-bottom:8px">Resources</h3>
+    <table class="compare">
+      <tr><th>Resource</th><th>URL</th></tr>
+      <tr><td>Official Documentation</td><td><code>docs.unrealengine.com</code></td></tr>
+      <tr><td>Unreal Learning Portal</td><td><code>dev.epicgames.com/community/learning</code></td></tr>
+      <tr><td>Blueprint API Reference</td><td><code>docs.unrealengine.com/BlueprintAPI</code></td></tr>
+      <tr><td>Unreal Slackers (Discord)</td><td>Community Discord for real-time help</td></tr>
+      <tr><td>Unreal Source (GitHub)</td><td>Read engine source to understand how nodes work internally</td></tr>
+      <tr><td>Ben Cloward (YouTube)</td><td>Advanced material and shader tutorials</td></tr>
+      <tr><td>Alex Forsythe (YouTube)</td><td>Deep-dive UE5 systems explanations</td></tr>
+    </table>
+  </div>
+
+  <div class="success-note"><strong>Congratulations:</strong> You have completed all three parts of the Blueprints Masterclass. From your first Print String node to save systems, networking, and production optimisation &mdash; you now have the knowledge to build complete, polished gameplay systems entirely in UE5 Blueprints.</div>
+</div>
+
+<!-- NAVIGATION -->
+<div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:40px 0 0">
+  <a href="blueprints-masterclass-02.html" style="background:var(--surface);border:1px solid var(--border);color:var(--accent);font-family:var(--mono);font-size:13px;padding:10px 24px;border-radius:100px;text-decoration:none;transition:all 0.2s;letter-spacing:0.5px">&larr; Part 2: Intermediate</a>
+  <a href="unreal-journey.html" style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);color:var(--accent);font-family:var(--mono);font-size:13px;padding:10px 24px;border-radius:100px;text-decoration:none;transition:all 0.2s;letter-spacing:0.5px">Back to Dashboard</a>
+</div>
+
+</div><!-- close wrap -->
+
+<footer>
+  Blueprints Masterclass Part 3 &mdash; 4E Virtual Design
+</footer>
+
+</body>
+</html>
